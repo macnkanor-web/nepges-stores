@@ -23,10 +23,10 @@ const Contact = () => {
                   </div>
                   <h3 className="font-semibold mb-2">Email</h3>
                   <a
-                    href="mailto:hello@example.com"
+                    href="mailto:mac.nkanor@gmail.com"
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    hello@example.com
+                    mac.nkanor@gmail.com
                   </a>
                 </div>
                 <div className="flex flex-col items-center text-center p-4">
@@ -35,10 +35,10 @@ const Contact = () => {
                   </div>
                   <h3 className="font-semibold mb-2">Phone</h3>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+2349076759510"
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    +1 (234) 567-890
+                    +234 907 675 9510
                   </a>
                 </div>
                 <div className="flex flex-col items-center text-center p-4">
@@ -46,7 +46,7 @@ const Contact = () => {
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold mb-2">Location</h3>
-                  <p className="text-muted-foreground">San Francisco, CA</p>
+                  <p className="text-muted-foreground">Calabar, Cross River, Nigeria</p>
                 </div>
               </div>
               <div className="text-center">
@@ -55,7 +55,7 @@ const Contact = () => {
                   className="bg-gradient-to-r from-accent to-accent/80 hover:opacity-90 text-accent-foreground font-semibold px-8 shadow-[var(--shadow-strong)]"
                   asChild
                 >
-                  <a href="mailto:hello@example.com">Send a Message</a>
+                  <a href="mailto:mac.nkanor@gmail.com">Send a Message</a>
                 </Button>
               </div>
             </CardContent>

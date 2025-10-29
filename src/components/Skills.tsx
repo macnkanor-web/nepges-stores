@@ -31,17 +31,17 @@ const Skills = () => {
         <h2 className="font-display text-4xl md:text-5xl font-bold mb-16 text-center">
           Skills & <span className="text-gradient">Expertise</span>
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-animation">
           {skills.map((skill, index) => (
             <Card
               key={index}
-              className="hover-lift border-border/50 bg-card/50 backdrop-blur-sm"
+              className="hover-lift hover-glow border-border/50 bg-card/50 backdrop-blur-sm group"
               style={{
                 animationDelay: `${index * 0.1}s`,
               }}
             >
               <CardContent className="p-6 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-glow mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-glow mb-4 group-hover:scale-110 transition-transform duration-300">
                   <skill.icon className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="font-semibold text-xl mb-2">{skill.title}</h3>

@@ -7,26 +7,26 @@ import project3 from "@/assets/project3.jpg";
 
 const projects = [
   {
-    title: "Modern Web App",
-    description: "A full-stack application built with React and Node.js, featuring real-time updates and a sleek UI.",
+    title: "Portfolio Website",
+    description: "A modern, responsive portfolio website showcasing my skills and projects with smooth animations and beautiful design.",
     image: project1,
-    tags: ["React", "TypeScript", "Node.js"],
-    demo: "#",
-    github: "#",
+    tags: ["React", "TypeScript", "Tailwind CSS"],
+    demo: "https://github.com/macnkanor-web/portfolio-web",
+    github: "https://github.com/macnkanor-web/portfolio-web",
   },
   {
-    title: "E-Commerce Platform",
-    description: "Responsive online store with cart functionality, payment integration, and admin dashboard.",
+    title: "Task Manager Web App",
+    description: "Full-featured task management application with user authentication, real-time updates, and intuitive interface.",
     image: project2,
-    tags: ["Next.js", "Stripe", "PostgreSQL"],
+    tags: ["React", "Node.js", "MongoDB"],
     demo: "#",
     github: "#",
   },
   {
-    title: "Creative Portfolio",
-    description: "Interactive portfolio website with smooth animations and dynamic content management.",
+    title: "Date of Birth Calculator",
+    description: "Interactive calculator that computes age, zodiac signs, and fun birthday facts from a given date of birth.",
     image: project3,
-    tags: ["React", "Tailwind", "Framer Motion"],
+    tags: ["JavaScript", "HTML", "CSS"],
     demo: "#",
     github: "#",
   },
@@ -39,16 +39,16 @@ const Projects = () => {
         <h2 className="font-display text-4xl md:text-5xl font-bold mb-16 text-center">
           Featured <span className="text-gradient">Projects</span>
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-animation">
           {projects.map((project, index) => (
             <Card
               key={index}
-              className="overflow-hidden hover-lift border-border/50"
+              className="overflow-hidden hover-lift hover-glow border-border/50 bg-card/50 backdrop-blur-sm group"
               style={{
                 animationDelay: `${index * 0.1}s`,
               }}
             >
-              <div className="relative overflow-hidden group">
+              <div className="relative overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}

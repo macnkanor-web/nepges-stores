@@ -20,12 +20,11 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center text-white animate-fade-in">
-        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
-          Creative Developer
-          <br />& Designer
+        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-scale-in">
+          Hi, I'm <span className="text-white drop-shadow-lg">Samuel Nkanor</span>
         </h1>
-        <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto">
-          Crafting beautiful, functional web experiences with modern technologies
+        <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto animate-slide-up">
+          Frontend / Backend Developer & Software Engineer in Training
         </p>
         
         <div className="flex flex-wrap gap-4 justify-center mb-12">
@@ -47,26 +46,29 @@ const Hero = () => {
         </div>
 
         {/* Social Links */}
-        <div className="flex gap-6 justify-center mb-16">
+        <div className="flex gap-6 justify-center mb-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
           <a
-            href="https://github.com"
+            href="https://github.com/macnkanor-web/portfolio-web"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+            aria-label="GitHub Profile"
           >
             <Github className="w-6 h-6" />
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/samuel-nkanor-172a83381"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+            aria-label="LinkedIn Profile"
           >
             <Linkedin className="w-6 h-6" />
           </a>
           <a
-            href="mailto:hello@example.com"
+            href="mailto:mac.nkanor@gmail.com"
             className="p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+            aria-label="Email Contact"
           >
             <Mail className="w-6 h-6" />
           </a>
