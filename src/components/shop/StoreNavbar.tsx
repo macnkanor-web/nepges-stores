@@ -2,16 +2,33 @@ import { Link } from "react-router-dom";
 import { Store, Smartphone, Watch, Headphones, Shirt } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { ShopifyProduct } from "@/lib/shopify";
 
 const categories = [
-  { name: "Electronics", icon: Smartphone },
-  { name: "Wearables", icon: Watch },
-  { name: "Audio", icon: Headphones },
-  { name: "Fashion", icon: Shirt },
+  { name: "Electronics", icon: Smartphone, tags: ["electronics", "phone", "smartphone", "laptop"] },
+  { name: "Wearables", icon: Watch, tags: ["wearables", "watch", "smartwatch", "fitness"] },
+  { name: "Audio", icon: Headphones, tags: ["audio", "headphones", "speaker", "sound"] },
+  { name: "Fashion", icon: Shirt, tags: ["fashion", "clothing", "apparel", "shirt"] },
 ];
 
-export const StoreNavbar = () => {
+interface StoreNavbarProps {
+  products?: ShopifyProduct[];
+}
+
+export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
+  const getCategoryProducts = (categoryTags: string[]) => {
+    return products.filter(product => {
+      const productTags = product.node.tags?.join(',').toLowerCase() || "";
+      return categoryTags.some(tag => productTags.includes(tag.toLowerCase()));
+    }).slice(0, 4);
+  };
   return (
     <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-lg z-50 border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
@@ -26,22 +43,75 @@ export const StoreNavbar = () => {
           </Link>
           
           <div className="flex items-center gap-3">
-            <div className="hidden lg:flex items-center gap-2">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <Button
-                    key={category.name}
-                    variant="ghost"
-                    size="sm"
-                    className="gap-2 hover:text-primary hover:bg-primary/5 transition-colors"
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">{category.name}</span>
-                  </Button>
-                );
-              })}
-            </div>
+            <NavigationMenu className="hidden lg:flex">
+              <NavigationMenuList>
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  const categoryProducts = getCategoryProducts(category.tags);
+                  
+                  return (
+                    <NavigationMenuItem key={category.name}>
+                      <NavigationMenuTrigger className="gap-2 bg-transparent hover:bg-primary/5">
+                        <Icon className="h-4 w-4" />
+                        <span className="text-sm font-medium">{category.name}</span>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-[500px] p-4">
+                          <h4 className="text-sm font-semibold mb-3 text-foreground">{category.name}</h4>
+                          {categoryProducts.length === 0 ? (
+                            <div className="text-center py-8 text-muted-foreground">
+                              <Icon className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                              <p className="text-sm">No products in this category yet</p>
+                            </div>
+                          ) : (
+                            <div className="grid grid-cols-2 gap-3">
+                              {categoryProducts.map((product) => {
+                                const image = product.node.images?.edges?.[0]?.node;
+                                const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
+                                const currency = product.node.priceRange.minVariantPrice.currencyCode;
+                                
+                                return (
+                                  <Link
+                                    key={product.node.id}
+                                    to={`/store/product/${product.node.handle}`}
+                                    className="group flex gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+                                  >
+                                    <div className="w-16 h-16 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
+                                      {image ? (
+                                        <img
+                                          src={image.url}
+                                          alt={image.altText || product.node.title}
+                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                          <Store className="h-6 w-6 text-muted-foreground/50" />
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h5 className="text-sm font-medium line-clamp-1 group-hover:text-primary transition-colors">
+                                        {product.node.title}
+                                      </h5>
+                                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                                        {product.node.description}
+                                      </p>
+                                      <p className="text-sm font-semibold text-primary mt-1">
+                                        {currency} {price.toFixed(2)}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  );
+                })}
+              </NavigationMenuList>
+            </NavigationMenu>
             <div className="h-8 w-px bg-border hidden lg:block" />
             <ThemeToggle />
             <CartDrawer />

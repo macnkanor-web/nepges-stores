@@ -25,7 +25,7 @@ const Store = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <StoreNavbar />
+      <StoreNavbar products={products} />
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-4 overflow-hidden">
