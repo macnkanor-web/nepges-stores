@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import { Store, Smartphone, Watch, Headphones, Shirt } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Store, Smartphone, Watch, Headphones, Shirt, Search } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useState, useEffect } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,6 +10,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
 import { ShopifyProduct } from "@/lib/shopify";
 
 const categories = [
@@ -23,13 +33,78 @@ interface StoreNavbarProps {
 }
 
 export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const navigate = useNavigate();
+
   const getCategoryProducts = (categoryTags: string[]) => {
     return products.filter(product => {
       const productTags = product.node.tags?.join(',').toLowerCase() || "";
       return categoryTags.some(tag => productTags.includes(tag.toLowerCase()));
     }).slice(0, 4);
   };
+
+  const handleSearchSelect = (handle: string) => {
+    setSearchOpen(false);
+    navigate(`/store/product/${handle}`);
+  };
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   return (
+    <>
+      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <CommandInput placeholder="Search products by name, category, or tags..." />
+        <CommandList>
+          <CommandEmpty>No products found.</CommandEmpty>
+          <CommandGroup heading="Products">
+            {products.map((product) => {
+              const image = product.node.images?.edges?.[0]?.node;
+              const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
+              const currency = product.node.priceRange.minVariantPrice.currencyCode;
+              
+              return (
+                <CommandItem
+                  key={product.node.id}
+                  value={`${product.node.title} ${product.node.tags?.join(' ')} ${product.node.description}`}
+                  onSelect={() => handleSearchSelect(product.node.handle)}
+                  className="flex items-center gap-3 p-2 cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
+                    {image ? (
+                      <img
+                        src={image.url}
+                        alt={image.altText || product.node.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Store className="h-6 w-6 text-muted-foreground/50" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm truncate">{product.node.title}</p>
+                    <p className="text-xs text-muted-foreground truncate">{product.node.description}</p>
+                    <p className="text-sm font-semibold text-primary mt-0.5">
+                      {currency} {price.toFixed(2)}
+                    </p>
+                  </div>
+                </CommandItem>
+              );
+            })}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-lg z-50 border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
@@ -41,6 +116,20 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
               Nepges <span className="text-gradient">Store</span>
             </span>
           </Link>
+          
+          <div className="flex-1 max-w-md mx-8 hidden md:block">
+            <Button
+              variant="outline"
+              className="w-full justify-start text-muted-foreground hover:text-foreground"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search className="h-4 w-4 mr-2" />
+              <span>Search products...</span>
+              <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </Button>
+          </div>
           
           <div className="flex items-center gap-3">
             <NavigationMenu className="hidden lg:flex">
@@ -112,6 +201,14 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
                 })}
               </NavigationMenuList>
             </NavigationMenu>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search className="h-5 w-5" />
+            </Button>
             <div className="h-8 w-px bg-border hidden lg:block" />
             <ThemeToggle />
             <CartDrawer />
@@ -119,5 +216,6 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
