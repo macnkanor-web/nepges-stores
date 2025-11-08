@@ -1,58 +1,61 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, ArrowLeft, Loader2 } from "lucide-react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
-import { ShopifyProduct, storefrontApiRequest, PRODUCT_BY_HANDLE_QUERY } from "@/lib/shopify";
+import { mockProducts, MockProduct } from "@/data/mockProducts";
 import { useCartStore } from "@/stores/cartStore";
-import { Loader2, ArrowLeft, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetail = () => {
-  const { handle } = useParams<{ handle: string }>();
-  const [product, setProduct] = useState<ShopifyProduct["node"] | null>(null);
+  const { handle } = useParams();
+  const addItem = useCartStore(state => state.addItem);
+  const [product, setProduct] = useState<MockProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
-  const addItem = useCartStore(state => state.addItem);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      if (!handle) return;
+    const foundProduct = mockProducts.find(p => p.handle === handle);
+    
+    if (foundProduct) {
+      setProduct(foundProduct);
       
-      try {
-        const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
-        const productData = data.data.product;
-        setProduct(productData);
+      // Set initial selected variant
+      const firstVariant = foundProduct.variants[0];
+      if (firstVariant) {
+        setSelectedVariant(firstVariant);
         
-        if (productData?.variants?.edges?.[0]) {
-          setSelectedVariant(productData.variants.edges[0].node);
-          const initialOptions: Record<string, string> = {};
-          productData.variants.edges[0].node.selectedOptions.forEach((opt: any) => {
-            initialOptions[opt.name] = opt.value;
-          });
-          setSelectedOptions(initialOptions);
-        }
-      } catch (error) {
-        console.error("Failed to fetch product:", error);
-      } finally {
-        setLoading(false);
+        // Set initial selected options
+        const initialOptions: Record<string, string> = {};
+        firstVariant.selectedOptions.forEach(opt => {
+          initialOptions[opt.name] = opt.value;
+        });
+        setSelectedOptions(initialOptions);
       }
-    };
-
-    fetchProduct();
+    }
+    
+    setLoading(false);
   }, [handle]);
 
   const handleOptionChange = (optionName: string, value: string) => {
-    const newOptions = { ...selectedOptions, [optionName]: value };
-    setSelectedOptions(newOptions);
-    
-    const variant = product?.variants.edges.find(({ node }: any) => {
-      return node.selectedOptions.every((opt: any) => newOptions[opt.name] === opt.value);
-    });
-    
-    if (variant) {
-      setSelectedVariant(variant.node);
+    const newSelectedOptions = {
+      ...selectedOptions,
+      [optionName]: value
+    };
+    setSelectedOptions(newSelectedOptions);
+
+    // Find variant matching all selected options
+    if (product) {
+      const matchingVariant = product.variants.find(variant => {
+        return variant.selectedOptions.every(opt => 
+          newSelectedOptions[opt.name] === opt.value
+        );
+      });
+      
+      if (matchingVariant) {
+        setSelectedVariant(matchingVariant);
+      }
     }
   };
 
@@ -60,27 +63,25 @@ const ProductDetail = () => {
     if (!product || !selectedVariant) return;
 
     const cartItem = {
-      product: { node: product },
+      product,
       variantId: selectedVariant.id,
       variantTitle: selectedVariant.title,
       price: selectedVariant.price,
+      currencyCode: product.currencyCode,
       quantity: 1,
       selectedOptions: selectedVariant.selectedOptions
     };
     
     addItem(cartItem);
-    toast.success("Added to cart", {
-      description: product.title
+    toast.success("Added to cart!", {
+      description: `${product.title} - ${selectedVariant.title}`
     });
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <StoreNavbar />
-        <div className="container mx-auto px-4 pt-32 flex justify-center items-center h-screen">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
       </div>
     );
   }
@@ -88,83 +89,77 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="min-h-screen bg-background">
-        <StoreNavbar />
-        <div className="container mx-auto px-4 pt-32 text-center">
-          <h2 className="text-2xl font-bold mb-4">Product Not Found</h2>
+        <StoreNavbar products={mockProducts} />
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h1 className="text-4xl font-bold mb-4">Product Not Found</h1>
+          <p className="text-muted-foreground mb-8">The product you're looking for doesn't exist.</p>
           <Link to="/store">
-            <Button>Back to Store</Button>
+            <Button>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Store
+            </Button>
           </Link>
         </div>
       </div>
     );
   }
 
-  const image = product.images?.edges?.[0]?.node;
-  const price = selectedVariant ? parseFloat(selectedVariant.price.amount) : parseFloat(product.priceRange.minVariantPrice.amount);
-  const currency = selectedVariant ? selectedVariant.price.currencyCode : product.priceRange.minVariantPrice.currencyCode;
-
   return (
     <div className="min-h-screen bg-background">
-      <StoreNavbar />
+      <StoreNavbar products={mockProducts} />
       
       <div className="container mx-auto px-4 pt-32 pb-20">
-        <Link to="/store" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-          <ArrowLeft className="h-4 w-4" />
-          Back to Store
+        <Link to="/store">
+          <Button variant="ghost" className="mb-8">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Store
+          </Button>
         </Link>
 
-        <div className="grid md:grid-cols-2 gap-12 animate-fade-in">
-          {/* Image Section */}
-          <div className="aspect-square rounded-lg overflow-hidden bg-secondary/20">
-            {image ? (
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Product Image */}
+          <div className="aspect-square bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-2xl overflow-hidden">
+            {product.image ? (
               <img 
-                src={image.url} 
-                alt={image.altText || product.title}
+                src={product.image}
+                alt={product.title}
                 className="w-full h-full object-cover"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <ShoppingCart className="h-32 w-32 text-muted-foreground" />
+                <ShoppingCart className="h-24 w-24 text-muted-foreground/30" />
               </div>
             )}
           </div>
 
-          {/* Details Section */}
+          {/* Product Info */}
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold mb-4">{product.title}</h1>
-              <div className="text-3xl font-bold text-primary mb-6">
-                {currency} {price.toFixed(2)}
-              </div>
-              
-              {selectedVariant?.availableForSale ? (
-                <Badge variant="secondary" className="bg-green-500/10 text-green-700 dark:text-green-400">
-                  In Stock
-                </Badge>
-              ) : (
-                <Badge variant="secondary" className="bg-red-500/10 text-red-700 dark:text-red-400">
-                  Out of Stock
-                </Badge>
-              )}
+              <p className="text-3xl font-bold text-gradient">
+                {product.currencyCode} {selectedVariant?.price.toFixed(2) || product.price.toFixed(2)}
+              </p>
             </div>
 
             {product.description && (
-              <div>
-                <h3 className="font-semibold mb-2">Description</h3>
-                <p className="text-muted-foreground">{product.description}</p>
-              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                {product.description}
+              </p>
             )}
 
-            {/* Options */}
-            {product.options?.map((option) => (
-              <div key={option.name}>
-                <h3 className="font-semibold mb-3">{option.name}</h3>
+            {/* Product Options */}
+            {product.options.map((option) => (
+              <div key={option.name} className="space-y-3">
+                <label className="text-sm font-semibold uppercase tracking-wide">
+                  {option.name}
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {option.values.map((value) => (
                     <Button
                       key={value}
                       variant={selectedOptions[option.name] === value ? "default" : "outline"}
                       onClick={() => handleOptionChange(option.name, value)}
+                      className="min-w-[80px]"
                     >
                       {value}
                     </Button>
@@ -173,15 +168,24 @@ const ProductDetail = () => {
               </div>
             ))}
 
-            <Button 
-              size="lg" 
-              className="w-full gap-2"
-              onClick={handleAddToCart}
-              disabled={!selectedVariant?.availableForSale}
-            >
-              <ShoppingCart className="h-5 w-5" />
-              Add to Cart
-            </Button>
+            {/* Add to Cart Button */}
+            <div className="pt-6 border-t">
+              <Button
+                size="lg"
+                className="w-full md:w-auto gap-2"
+                onClick={handleAddToCart}
+                disabled={!selectedVariant?.availableForSale}
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {selectedVariant?.availableForSale ? 'Add to Cart' : 'Out of Stock'}
+              </Button>
+              
+              {selectedVariant?.availableForSale && (
+                <p className="text-sm text-muted-foreground mt-4">
+                  ✓ In stock and ready to ship
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

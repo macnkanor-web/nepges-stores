@@ -19,7 +19,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { ShopifyProduct } from "@/lib/shopify";
+import { MockProduct } from "@/data/mockProducts";
 
 const categories = [
   { name: "Electronics", icon: Smartphone, tags: ["electronics", "phone", "smartphone", "laptop"] },
@@ -29,7 +29,7 @@ const categories = [
 ];
 
 interface StoreNavbarProps {
-  products?: ShopifyProduct[];
+  products?: MockProduct[];
 }
 
 export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
@@ -38,7 +38,7 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
 
   const getCategoryProducts = (categoryTags: string[]) => {
     return products.filter(product => {
-      const productTags = product.node.tags?.join(',').toLowerCase() || "";
+      const productTags = product.tags?.join(',').toLowerCase() || "";
       return categoryTags.some(tag => productTags.includes(tag.toLowerCase()));
     }).slice(0, 4);
   };
@@ -67,41 +67,35 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
         <CommandList>
           <CommandEmpty>No products found.</CommandEmpty>
           <CommandGroup heading="Products">
-            {products.map((product) => {
-              const image = product.node.images?.edges?.[0]?.node;
-              const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
-              const currency = product.node.priceRange.minVariantPrice.currencyCode;
-              
-              return (
-                <CommandItem
-                  key={product.node.id}
-                  value={`${product.node.title} ${product.node.tags?.join(' ')} ${product.node.description}`}
-                  onSelect={() => handleSearchSelect(product.node.handle)}
-                  className="flex items-center gap-3 p-2 cursor-pointer"
-                >
-                  <div className="w-12 h-12 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
-                    {image ? (
-                      <img
-                        src={image.url}
-                        alt={image.altText || product.node.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Store className="h-6 w-6 text-muted-foreground/50" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{product.node.title}</p>
-                    <p className="text-xs text-muted-foreground truncate">{product.node.description}</p>
-                    <p className="text-sm font-semibold text-primary mt-0.5">
-                      {currency} {price.toFixed(2)}
-                    </p>
-                  </div>
-                </CommandItem>
-              );
-            })}
+            {products.map((product) => (
+              <CommandItem
+                key={product.id}
+                value={`${product.title} ${product.tags?.join(' ')} ${product.description}`}
+                onSelect={() => handleSearchSelect(product.handle)}
+                className="flex items-center gap-3 p-2 cursor-pointer"
+              >
+                <div className="w-12 h-12 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Store className="h-6 w-6 text-muted-foreground/50" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{product.title}</p>
+                  <p className="text-xs text-muted-foreground truncate">{product.description}</p>
+                  <p className="text-sm font-semibold text-primary mt-0.5">
+                    {product.currencyCode} {product.price.toFixed(2)}
+                  </p>
+                </div>
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
@@ -154,44 +148,38 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
                             </div>
                           ) : (
                             <div className="grid grid-cols-2 gap-3">
-                              {categoryProducts.map((product) => {
-                                const image = product.node.images?.edges?.[0]?.node;
-                                const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
-                                const currency = product.node.priceRange.minVariantPrice.currencyCode;
-                                
-                                return (
-                                  <Link
-                                    key={product.node.id}
-                                    to={`/store/product/${product.node.handle}`}
-                                    className="group flex gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors"
-                                  >
-                                    <div className="w-16 h-16 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
-                                      {image ? (
-                                        <img
-                                          src={image.url}
-                                          alt={image.altText || product.node.title}
-                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                        />
-                                      ) : (
-                                        <div className="w-full h-full flex items-center justify-center">
-                                          <Store className="h-6 w-6 text-muted-foreground/50" />
-                                        </div>
-                                      )}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <h5 className="text-sm font-medium line-clamp-1 group-hover:text-primary transition-colors">
-                                        {product.node.title}
-                                      </h5>
-                                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                                        {product.node.description}
-                                      </p>
-                                      <p className="text-sm font-semibold text-primary mt-1">
-                                        {currency} {price.toFixed(2)}
-                                      </p>
-                                    </div>
-                                  </Link>
-                                );
-                              })}
+                              {categoryProducts.map((product) => (
+                                <Link
+                                  key={product.id}
+                                  to={`/store/product/${product.handle}`}
+                                  className="group flex gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="w-16 h-16 rounded-md overflow-hidden bg-secondary/30 flex-shrink-0">
+                                    {product.image ? (
+                                      <img
+                                        src={product.image}
+                                        alt={product.title}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center">
+                                        <Store className="h-6 w-6 text-muted-foreground/50" />
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h5 className="text-sm font-medium line-clamp-1 group-hover:text-primary transition-colors">
+                                      {product.title}
+                                    </h5>
+                                    <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                                      {product.description}
+                                    </p>
+                                    <p className="text-sm font-semibold text-primary mt-1">
+                                      {product.currencyCode} {product.price.toFixed(2)}
+                                    </p>
+                                  </div>
+                                </Link>
+                              ))}
                             </div>
                           )}
                         </div>

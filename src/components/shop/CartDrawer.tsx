@@ -9,37 +9,32 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, CheckCircle2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const { 
     items, 
-    isLoading, 
     updateQuantity, 
-    removeItem, 
-    createCheckout 
+    removeItem,
+    clearCart 
   } = useCartStore();
   
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleCheckout = async () => {
-    try {
-      await createCheckout();
-      const checkoutUrl = useCartStore.getState().checkoutUrl;
-      if (checkoutUrl) {
-        window.open(checkoutUrl, '_blank');
-        setIsOpen(false);
-      }
-    } catch (error) {
-      console.error('Checkout failed:', error);
-      toast.error("Failed to create checkout", {
-        description: "Please try again later"
-      });
-    }
+  const handleCheckout = () => {
+    // Demo checkout - show success message
+    toast.success("Order Placed Successfully!", {
+      description: `Thank you for your order of ${totalItems} item${totalItems !== 1 ? 's' : ''}. Total: $${totalPrice.toFixed(2)}`,
+      duration: 5000,
+    });
+    clearCart();
+    setIsOpen(false);
   };
 
   return (
@@ -78,22 +73,22 @@ export const CartDrawer = () => {
                   {items.map((item) => (
                     <div key={item.variantId} className="flex gap-4 p-2 rounded-lg hover:bg-secondary/50 transition-colors">
                       <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
-                        {item.product.node.images?.edges?.[0]?.node && (
+                        {item.product.image && (
                           <img
-                            src={item.product.node.images.edges[0].node.url}
-                            alt={item.product.node.title}
+                            src={item.product.image}
+                            alt={item.product.title}
                             className="w-full h-full object-cover"
                           />
                         )}
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium truncate">{item.product.node.title}</h4>
+                        <h4 className="font-medium truncate">{item.product.title}</h4>
                         <p className="text-sm text-muted-foreground">
                           {item.selectedOptions.map(option => option.value).join(' • ')}
                         </p>
                         <p className="font-semibold">
-                          {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}
+                          {item.currencyCode} {item.price.toFixed(2)}
                         </p>
                       </div>
                       
@@ -136,7 +131,7 @@ export const CartDrawer = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
                   <span className="text-xl font-bold">
-                    {items[0]?.price.currencyCode || 'USD'} {totalPrice.toFixed(2)}
+                    {items[0]?.currencyCode || 'USD'} {totalPrice.toFixed(2)}
                   </span>
                 </div>
                 
@@ -144,20 +139,15 @@ export const CartDrawer = () => {
                   onClick={handleCheckout}
                   className="w-full" 
                   size="lg"
-                  disabled={items.length === 0 || isLoading}
+                  disabled={items.length === 0}
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Creating Checkout...
-                    </>
-                  ) : (
-                    <>
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Checkout with Shopify
-                    </>
-                  )}
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Complete Order (Demo)
                 </Button>
+                
+                <p className="text-xs text-center text-muted-foreground">
+                  This is a demo store. No real payment will be processed.
+                </p>
               </div>
             </>
           )}

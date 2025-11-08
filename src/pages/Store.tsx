@@ -1,8 +1,8 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { ShopifyProduct, storefrontApiRequest, STOREFRONT_QUERY } from "@/lib/shopify";
-import { Loader2, Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
+import { mockProducts } from "@/data/mockProducts";
+import { Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,27 +38,11 @@ const priceRanges = [
 ];
 
 const Store = () => {
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const products = mockProducts;
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 50 });
-        setProducts(data.data.products.edges);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories(prev =>
@@ -74,7 +58,7 @@ const Store = () => {
     // Filter by category
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(product => {
-        const productTags = product.node.tags?.join(',').toLowerCase() || "";
+        const productTags = product.tags?.join(',').toLowerCase() || "";
         return selectedCategories.some(categoryId => {
           const category = categories.find(c => c.id === categoryId);
           return category?.tags.some(tag => productTags.includes(tag.toLowerCase()));
@@ -86,25 +70,21 @@ const Store = () => {
     const priceRange = priceRanges.find(r => r.id === selectedPriceRange);
     if (priceRange && priceRange.id !== "all") {
       filtered = filtered.filter(product => {
-        const price = parseFloat(product.node.priceRange.minVariantPrice.amount);
-        return price >= priceRange.min && price < priceRange.max;
+        return product.price >= priceRange.min && product.price < priceRange.max;
       });
     }
 
     // Sort products
     filtered.sort((a, b) => {
-      const priceA = parseFloat(a.node.priceRange.minVariantPrice.amount);
-      const priceB = parseFloat(b.node.priceRange.minVariantPrice.amount);
-
       switch (sortBy) {
         case "price-asc":
-          return priceA - priceB;
+          return a.price - b.price;
         case "price-desc":
-          return priceB - priceA;
+          return b.price - a.price;
         case "name-asc":
-          return a.node.title.localeCompare(b.node.title);
+          return a.title.localeCompare(b.title);
         case "name-desc":
-          return b.node.title.localeCompare(a.node.title);
+          return b.title.localeCompare(a.title);
         default:
           return 0;
       }
@@ -200,7 +180,7 @@ const Store = () => {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Explore our carefully curated selection of premium products designed for modern living</p>
         </div>
 
-        {!loading && products.length > 0 && (
+        {products.length > 0 && (
           <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               {/* Mobile Filter Button */}
@@ -257,7 +237,7 @@ const Store = () => {
 
         <div className="flex gap-8">
           {/* Desktop Sidebar Filters */}
-          {!loading && products.length > 0 && (
+          {products.length > 0 && (
             <aside className="hidden lg:block w-64 flex-shrink-0">
               <div className="sticky top-24 bg-card border border-border rounded-lg p-6 shadow-sm">
                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
@@ -271,11 +251,7 @@ const Store = () => {
 
           {/* Products Grid */}
           <div className="flex-1">
-            {loading ? (
-              <div className="flex justify-center items-center py-20">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              </div>
-            ) : products.length === 0 ? (
+            {products.length === 0 ? (
           <div className="text-center py-20 animate-scale-in">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-secondary/20 mb-6">
               <StoreIcon className="h-10 w-10 text-muted-foreground" />
@@ -311,7 +287,7 @@ const Store = () => {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 stagger-animation">
                 {filteredAndSortedProducts.map((product) => (
-                  <ProductCard key={product.node.id} product={product} />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}

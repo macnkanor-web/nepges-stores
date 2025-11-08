@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { ShopifyProduct, storefrontApiRequest } from '@/lib/shopify';
+import { MockProduct } from '@/data/mockProducts';
 
 export interface CartItem {
-  product: ShopifyProduct;
+  product: MockProduct;
   variantId: string;
   variantTitle: string;
-  price: {
-    amount: string;
-    currencyCode: string;
-  };
+  price: number;
+  currencyCode: string;
   quantity: number;
   selectedOptions: Array<{
     name: string;
@@ -19,103 +17,19 @@ export interface CartItem {
 
 interface CartStore {
   items: CartItem[];
-  cartId: string | null;
-  checkoutUrl: string | null;
   isLoading: boolean;
   
   addItem: (item: CartItem) => void;
   updateQuantity: (variantId: string, quantity: number) => void;
   removeItem: (variantId: string) => void;
   clearCart: () => void;
-  setCartId: (cartId: string) => void;
-  setCheckoutUrl: (url: string) => void;
   setLoading: (loading: boolean) => void;
-  createCheckout: () => Promise<void>;
-}
-
-const CART_CREATE_MUTATION = `
-  mutation cartCreate($input: CartInput!) {
-    cartCreate(input: $input) {
-      cart {
-        id
-        checkoutUrl
-        totalQuantity
-        cost {
-          totalAmount {
-            amount
-            currencyCode
-          }
-        }
-        lines(first: 100) {
-          edges {
-            node {
-              id
-              quantity
-              merchandise {
-                ... on ProductVariant {
-                  id
-                  title
-                  price {
-                    amount
-                    currencyCode
-                  }
-                  product {
-                    title
-                    handle
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      userErrors {
-        field
-        message
-      }
-    }
-  }
-`;
-
-async function createStorefrontCheckout(items: CartItem[]): Promise<string> {
-  try {
-    const lines = items.map(item => ({
-      quantity: item.quantity,
-      merchandiseId: item.variantId,
-    }));
-
-    const cartData = await storefrontApiRequest(CART_CREATE_MUTATION, {
-      input: {
-        lines,
-      },
-    });
-
-    if (cartData.data.cartCreate.userErrors.length > 0) {
-      throw new Error(`Cart creation failed: ${cartData.data.cartCreate.userErrors.map((e: any) => e.message).join(', ')}`);
-    }
-
-    const cart = cartData.data.cartCreate.cart;
-    
-    if (!cart.checkoutUrl) {
-      throw new Error('No checkout URL returned from Shopify');
-    }
-
-    const url = new URL(cart.checkoutUrl);
-    url.searchParams.set('channel', 'online_store');
-    const checkoutUrl = url.toString();
-    return checkoutUrl;
-  } catch (error) {
-    console.error('Error creating storefront checkout:', error);
-    throw error;
-  }
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
-      cartId: null,
-      checkoutUrl: null,
       isLoading: false,
 
       addItem: (item) => {
@@ -155,31 +69,13 @@ export const useCartStore = create<CartStore>()(
       },
 
       clearCart: () => {
-        set({ items: [], cartId: null, checkoutUrl: null });
+        set({ items: [] });
       },
 
-      setCartId: (cartId) => set({ cartId }),
-      setCheckoutUrl: (checkoutUrl) => set({ checkoutUrl }),
       setLoading: (isLoading) => set({ isLoading }),
-
-      createCheckout: async () => {
-        const { items, setLoading, setCheckoutUrl } = get();
-        if (items.length === 0) return;
-
-        setLoading(true);
-        try {
-          const checkoutUrl = await createStorefrontCheckout(items);
-          setCheckoutUrl(checkoutUrl);
-        } catch (error) {
-          console.error('Failed to create checkout:', error);
-          throw error;
-        } finally {
-          setLoading(false);
-        }
-      }
     }),
     {
-      name: 'shopify-cart',
+      name: 'demo-cart',
       storage: createJSONStorage(() => localStorage),
     }
   )
