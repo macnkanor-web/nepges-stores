@@ -1,4 +1,11 @@
 // Mock product data for demo store
+import tshirtBlack from '@/assets/products/tshirt-black.jpg';
+import jeansDenim from '@/assets/products/jeans-denim.jpg';
+import sneakersWhite from '@/assets/products/sneakers-white.jpg';
+import jacketLeather from '@/assets/products/jacket-leather.jpg';
+import sunglassesBlack from '@/assets/products/sunglasses-black.jpg';
+import watchSilver from '@/assets/products/watch-silver.jpg';
+
 export interface MockProduct {
   id: string;
   title: string;
@@ -239,6 +246,238 @@ export const mockProducts: MockProduct[] = [
     options: [
       { name: 'Size', values: ['Small', 'Medium', 'Large'] },
       { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '7',
+    title: 'Premium Cotton T-Shirt',
+    description: 'Soft, breathable cotton t-shirt with a classic fit. Perfect for everyday wear, this essential piece combines comfort with timeless style.',
+    handle: 'tshirt-premium',
+    tags: ['fashion', 'clothing', 'casual', 'new-arrival'],
+    price: 29.99,
+    currencyCode: 'USD',
+    image: tshirtBlack,
+    images: [tshirtBlack],
+    variants: [
+      {
+        id: 'variant-7-1',
+        title: 'Small / Black',
+        price: 29.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Small' },
+          { name: 'Color', value: 'Black' }
+        ]
+      },
+      {
+        id: 'variant-7-2',
+        title: 'Medium / Black',
+        price: 29.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Medium' },
+          { name: 'Color', value: 'Black' }
+        ]
+      },
+      {
+        id: 'variant-7-3',
+        title: 'Large / Black',
+        price: 29.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Large' },
+          { name: 'Color', value: 'Black' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['Small', 'Medium', 'Large'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '8',
+    title: 'Classic Denim Jeans',
+    description: 'Timeless denim jeans with perfect fit and durability. Crafted from premium denim fabric for all-day comfort and style.',
+    handle: 'jeans-classic',
+    tags: ['fashion', 'clothing', 'denim', 'featured'],
+    price: 79.99,
+    currencyCode: 'USD',
+    image: jeansDenim,
+    images: [jeansDenim],
+    variants: [
+      {
+        id: 'variant-8-1',
+        title: '30 / Blue',
+        price: 79.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Waist', value: '30' },
+          { name: 'Color', value: 'Blue' }
+        ]
+      },
+      {
+        id: 'variant-8-2',
+        title: '32 / Blue',
+        price: 79.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Waist', value: '32' },
+          { name: 'Color', value: 'Blue' }
+        ]
+      },
+      {
+        id: 'variant-8-3',
+        title: '34 / Blue',
+        price: 79.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Waist', value: '34' },
+          { name: 'Color', value: 'Blue' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Waist', values: ['30', '32', '34'] },
+      { name: 'Color', values: ['Blue'] }
+    ]
+  },
+  {
+    id: '9',
+    title: 'Leather Sneakers',
+    description: 'Minimalist white leather sneakers with premium craftsmanship. Versatile design pairs perfectly with any outfit.',
+    handle: 'sneakers-leather',
+    tags: ['fashion', 'footwear', 'sneakers', 'premium'],
+    price: 89.99,
+    currencyCode: 'USD',
+    image: sneakersWhite,
+    images: [sneakersWhite],
+    variants: [
+      {
+        id: 'variant-9-1',
+        title: '8 / White',
+        price: 89.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '8' },
+          { name: 'Color', value: 'White' }
+        ]
+      },
+      {
+        id: 'variant-9-2',
+        title: '9 / White',
+        price: 89.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '9' },
+          { name: 'Color', value: 'White' }
+        ]
+      },
+      {
+        id: 'variant-9-3',
+        title: '10 / White',
+        price: 89.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '10' },
+          { name: 'Color', value: 'White' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['8', '9', '10'] },
+      { name: 'Color', values: ['White'] }
+    ]
+  },
+  {
+    id: '10',
+    title: 'Leather Jacket',
+    description: 'Premium leather jacket with classic biker design. Crafted from genuine leather for exceptional quality and timeless appeal.',
+    handle: 'jacket-leather',
+    tags: ['fashion', 'clothing', 'outerwear', 'premium', 'featured'],
+    price: 299.99,
+    currencyCode: 'USD',
+    image: jacketLeather,
+    images: [jacketLeather],
+    variants: [
+      {
+        id: 'variant-10-1',
+        title: 'Medium / Black',
+        price: 299.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Medium' },
+          { name: 'Color', value: 'Black' }
+        ]
+      },
+      {
+        id: 'variant-10-2',
+        title: 'Large / Black',
+        price: 299.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Large' },
+          { name: 'Color', value: 'Black' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['Medium', 'Large'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '11',
+    title: 'Classic Sunglasses',
+    description: 'Timeless sunglasses with UV protection and sleek design. Essential accessory for sunny days and elevated style.',
+    handle: 'sunglasses-classic',
+    tags: ['fashion', 'accessories', 'eyewear', 'featured'],
+    price: 49.99,
+    currencyCode: 'USD',
+    image: sunglassesBlack,
+    images: [sunglassesBlack],
+    variants: [
+      {
+        id: 'variant-11-1',
+        title: 'One Size / Black',
+        price: 49.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'One Size' },
+          { name: 'Color', value: 'Black' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['One Size'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '12',
+    title: 'Classic Wristwatch',
+    description: 'Elegant silver wristwatch with precision movement. Sophisticated timepiece that complements any outfit with refined style.',
+    handle: 'watch-classic',
+    tags: ['fashion', 'accessories', 'watches', 'premium'],
+    price: 199.99,
+    currencyCode: 'USD',
+    image: watchSilver,
+    images: [watchSilver],
+    variants: [
+      {
+        id: 'variant-12-1',
+        title: 'One Size / Silver',
+        price: 199.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'One Size' },
+          { name: 'Color', value: 'Silver' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['One Size'] },
+      { name: 'Color', values: ['Silver'] }
     ]
   }
 ];
