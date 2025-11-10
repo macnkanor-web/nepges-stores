@@ -1,14 +1,15 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import LandingNavbar from "@/components/LandingNavbar";
+import Landing from "@/pages/Landing";
+import Footer from "@/components/Footer";
 
 const Index = () => {
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    navigate("/store", { replace: true });
-  }, [navigate]);
-
-  return null;
+  return (
+    <>
+      <LandingNavbar />
+      <Landing />
+      <Footer />
+    </>
+  );
 };
 
 export default Index;

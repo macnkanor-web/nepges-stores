@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Store, Smartphone, Watch, Headphones, Shirt, Search } from "lucide-react";
+import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { CartDrawer } from "./CartDrawer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useState, useEffect } from "react";
@@ -35,6 +37,12 @@ interface StoreNavbarProps {
 export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out successfully");
+    navigate("/");
+  };
 
   const getCategoryProducts = (categoryTags: string[]) => {
     return products.filter(product => {
@@ -200,6 +208,14 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
             <div className="h-8 w-px bg-border hidden lg:block" />
             <ThemeToggle />
             <CartDrawer />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSignOut}
+              title="Sign Out"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </div>
