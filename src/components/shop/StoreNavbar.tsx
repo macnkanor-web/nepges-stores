@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut } from "lucide-react";
+import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CartDrawer } from "./CartDrawer";
@@ -20,6 +20,12 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MockProduct } from "@/data/mockProducts";
 
@@ -110,14 +116,33 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
     <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-lg z-50 border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
-          <Link to="/store" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-primary to-primary-glow p-2.5 rounded-xl group-hover:scale-105 transition-transform shadow-md">
-              <Store className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="text-2xl font-bold">
-              Nepges <span className="text-gradient">Store</span>
-            </span>
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-3 group cursor-pointer hover:opacity-80 transition-opacity">
+                <div className="bg-gradient-to-br from-primary to-primary-glow p-2.5 rounded-xl group-hover:scale-105 transition-transform shadow-md">
+                  <Store className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <span className="text-2xl font-bold">
+                  Nepges <span className="text-gradient">Store</span>
+                </span>
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuItem asChild>
+                <a href="#" className="cursor-pointer">Home</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#products" className="cursor-pointer">Products</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#customer-care" className="cursor-pointer">Customer Care</a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="#virtual-wallet" className="cursor-pointer">Virtual Wallet</a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
           <div className="flex-1 max-w-md mx-8 hidden md:block">
             <Button

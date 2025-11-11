@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
+import { CustomerCare } from "@/components/shop/CustomerCare";
+import { VirtualWallet } from "@/components/shop/VirtualWallet";
 import { mockProducts } from "@/data/mockProducts";
 import { Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -173,7 +175,7 @@ const Store = () => {
       </section>
 
       {/* Products Section */}
-      <section className="container mx-auto px-4 pb-24">
+      <section id="products" className="container mx-auto px-4 pb-24">
         <div className="mb-12 text-center animate-slide-up">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">Our Collection</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
@@ -294,6 +296,12 @@ const Store = () => {
           </div>
         </div>
       </section>
+
+      {/* Customer Care Section */}
+      <CustomerCare />
+
+      {/* Virtual Wallet Section */}
+      <VirtualWallet />
 
       {/* Footer */}
       <footer className="relative bg-gradient-to-br from-secondary/30 to-secondary/10 border-t border-border/50 py-16 mt-20">
