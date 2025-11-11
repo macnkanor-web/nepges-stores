@@ -25,7 +25,7 @@ const LandingNavbar = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold flex items-center gap-2">
             <ShoppingBag className="w-6 h-6" />
-            <span className={isScrolled ? "text-foreground" : "text-white"}>ShopStore</span>
+            <span className={isScrolled ? "text-foreground" : "text-white"}>Nepges Store</span>
           </Link>
 
           {/* Desktop Navigation */}
