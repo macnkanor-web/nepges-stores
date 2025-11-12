@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { CustomerCare } from "@/components/shop/CustomerCare";
-import { VirtualWallet } from "@/components/shop/VirtualWallet";
 import { mockProducts } from "@/data/mockProducts";
 import { Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -296,12 +294,6 @@ const Store = () => {
           </div>
         </div>
       </section>
-
-      {/* Customer Care Section */}
-      <CustomerCare />
-
-      {/* Virtual Wallet Section */}
-      <VirtualWallet />
 
       {/* Footer */}
       <footer className="relative bg-gradient-to-br from-secondary/30 to-secondary/10 border-t border-border/50 py-16 mt-20">

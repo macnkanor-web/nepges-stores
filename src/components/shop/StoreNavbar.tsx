@@ -130,16 +130,16 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-56">
               <DropdownMenuItem asChild>
-                <a href="#" className="cursor-pointer">Home</a>
+                <Link to="/" className="cursor-pointer">Home</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a href="#products" className="cursor-pointer">Products</a>
+                <Link to="/store" className="cursor-pointer">Products</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a href="#customer-care" className="cursor-pointer">Customer Care</a>
+                <Link to="/customer-care" className="cursor-pointer">Customer Care</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a href="#virtual-wallet" className="cursor-pointer">Virtual Wallet</a>
+                <Link to="/wallet" className="cursor-pointer">Virtual Wallet</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
