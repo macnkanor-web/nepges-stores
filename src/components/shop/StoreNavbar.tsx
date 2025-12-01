@@ -141,6 +141,9 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
               <DropdownMenuItem asChild>
                 <Link to="/wallet" className="cursor-pointer">Virtual Wallet</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/faq" className="cursor-pointer">FAQ</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           

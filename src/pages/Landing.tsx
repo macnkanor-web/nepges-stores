@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag, Shield, Truck, Mail, Phone, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { ThreeBackground } from "@/components/ThreeBackground";
 import heroImage from "@/assets/hero-bg.jpg";
 
 const Landing = () => {
@@ -9,6 +10,7 @@ const Landing = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <ThreeBackground />
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
