@@ -144,6 +144,9 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
               <DropdownMenuItem asChild>
                 <Link to="/faq" className="cursor-pointer">FAQ</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings" className="cursor-pointer">Settings</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
