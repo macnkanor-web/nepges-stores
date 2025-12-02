@@ -30,11 +30,12 @@ function AnimatedSphere() {
 
 export const ThreeBackground = () => {
   return (
-    <div className="absolute inset-0 -z-10 opacity-30">
+    <div className="absolute inset-0 -z-10 opacity-50">
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, -10, -5]} intensity={0.5} color="#8b5cf6" />
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[10, 10, 5]} intensity={1.5} />
+        <pointLight position={[-10, -10, -5]} intensity={0.8} color="#8b5cf6" />
+        <pointLight position={[10, -10, -5]} intensity={0.6} color="#6366f1" />
         <AnimatedSphere />
       </Canvas>
     </div>
