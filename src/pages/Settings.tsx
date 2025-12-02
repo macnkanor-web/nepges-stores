@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import Footer from "@/components/Footer";
 import { mockProducts } from "@/data/mockProducts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { User, Bell, Shield, CreditCard, Package, LogOut, Mail, Phone } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User, Bell, Shield, CreditCard, Package, LogOut, Mail, Phone, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -16,20 +17,97 @@ const Settings = () => {
   const { toast } = useToast();
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Get current user
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
+      if (user) {
+        loadProfile(user.id);
+      }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        loadProfile(session.user.id);
+      } else {
+        setAvatarUrl(null);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const loadProfile = async (userId: string) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('avatar_url')
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    if (data?.avatar_url) {
+      setAvatarUrl(data.avatar_url);
+    }
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+
+      if (!event.target.files || event.target.files.length === 0) {
+        return;
+      }
+
+      const file = event.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${user!.id}/${Math.random()}.${fileExt}`;
+
+      // Upload image to storage
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Update or insert profile
+      const { error: upsertError } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user!.id,
+          avatar_url: publicUrl,
+        });
+
+      if (upsertError) throw upsertError;
+
+      setAvatarUrl(publicUrl);
+      toast({
+        title: "Success!",
+        description: "Profile picture updated successfully.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error uploading image",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -70,7 +148,7 @@ const Settings = () => {
               </p>
             </div>
 
-            {/* Account Information */}
+            {/* Profile Picture & Account Information */}
             <div className="mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <Card>
                 <CardHeader>
@@ -80,13 +158,43 @@ const Settings = () => {
                     </div>
                     <div>
                       <CardTitle>Account Information</CardTitle>
-                      <CardDescription>Your account details and status</CardDescription>
+                      <CardDescription>Your account details and profile picture</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {user ? (
                     <>
+                      <div className="flex flex-col items-center gap-4 py-4">
+                        <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
+                          <Avatar className="h-32 w-32">
+                            <AvatarImage src={avatarUrl || undefined} alt="Profile picture" />
+                            <AvatarFallback className="text-3xl">
+                              {user.email?.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Camera className="w-8 h-8 text-white" />
+                          </div>
+                        </div>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={uploadAvatar}
+                          disabled={uploading}
+                          className="hidden"
+                        />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={handleAvatarClick}
+                          disabled={uploading}
+                        >
+                          {uploading ? "Uploading..." : "Change Profile Picture"}
+                        </Button>
+                      </div>
+                      <Separator />
                       <div className="flex justify-between items-center">
                         <span className="text-muted-foreground">Email</span>
                         <span className="font-medium">{user.email}</span>
