@@ -5,6 +5,9 @@ import sneakersWhite from '@/assets/products/sneakers-white.jpg';
 import jacketLeather from '@/assets/products/jacket-leather.jpg';
 import sunglassesBlack from '@/assets/products/sunglasses-black.jpg';
 import watchSilver from '@/assets/products/watch-silver.jpg';
+import hoodieBlack from '@/assets/products/hoodie-black.jpg';
+import hoodieNavy from '@/assets/products/hoodie-navy.jpg';
+import hoodieBurgundy from '@/assets/products/hoodie-burgundy.jpg';
 
 export interface MockProduct {
   id: string;
@@ -478,6 +481,147 @@ export const mockProducts: MockProduct[] = [
     options: [
       { name: 'Size', values: ['One Size'] },
       { name: 'Color', values: ['Silver'] }
+    ]
+  },
+  {
+    id: '13',
+    title: 'Premium Hoodie - Black',
+    description: 'Ultra-soft premium hoodie with kangaroo pocket and adjustable drawstring hood. Perfect for layering or lounging in style.',
+    handle: 'hoodie-black',
+    tags: ['fashion', 'clothing', 'hoodies', 'new-arrival'],
+    price: 59.99,
+    currencyCode: 'USD',
+    image: hoodieBlack,
+    images: [hoodieBlack],
+    variants: [
+      {
+        id: 'variant-13-1',
+        title: 'Small / Black',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Small' },
+          { name: 'Color', value: 'Black' }
+        ]
+      },
+      {
+        id: 'variant-13-2',
+        title: 'Medium / Black',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Medium' },
+          { name: 'Color', value: 'Black' }
+        ]
+      },
+      {
+        id: 'variant-13-3',
+        title: 'Large / Black',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Large' },
+          { name: 'Color', value: 'Black' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['Small', 'Medium', 'Large'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '14',
+    title: 'Premium Hoodie - Navy',
+    description: 'Classic navy blue hoodie crafted from premium cotton blend. Features ribbed cuffs and hem for a comfortable, snug fit.',
+    handle: 'hoodie-navy',
+    tags: ['fashion', 'clothing', 'hoodies', 'featured'],
+    price: 59.99,
+    currencyCode: 'USD',
+    image: hoodieNavy,
+    images: [hoodieNavy],
+    variants: [
+      {
+        id: 'variant-14-1',
+        title: 'Small / Navy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Small' },
+          { name: 'Color', value: 'Navy' }
+        ]
+      },
+      {
+        id: 'variant-14-2',
+        title: 'Medium / Navy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Medium' },
+          { name: 'Color', value: 'Navy' }
+        ]
+      },
+      {
+        id: 'variant-14-3',
+        title: 'Large / Navy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Large' },
+          { name: 'Color', value: 'Navy' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['Small', 'Medium', 'Large'] },
+      { name: 'Color', values: ['Navy'] }
+    ]
+  },
+  {
+    id: '15',
+    title: 'Premium Hoodie - Burgundy',
+    description: 'Bold burgundy hoodie with a cozy fleece interior. Stand out in style with this rich, eye-catching color.',
+    handle: 'hoodie-burgundy',
+    tags: ['fashion', 'clothing', 'hoodies', 'premium'],
+    price: 59.99,
+    currencyCode: 'USD',
+    image: hoodieBurgundy,
+    images: [hoodieBurgundy],
+    variants: [
+      {
+        id: 'variant-15-1',
+        title: 'Small / Burgundy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Small' },
+          { name: 'Color', value: 'Burgundy' }
+        ]
+      },
+      {
+        id: 'variant-15-2',
+        title: 'Medium / Burgundy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Medium' },
+          { name: 'Color', value: 'Burgundy' }
+        ]
+      },
+      {
+        id: 'variant-15-3',
+        title: 'Large / Burgundy',
+        price: 59.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: 'Large' },
+          { name: 'Color', value: 'Burgundy' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['Small', 'Medium', 'Large'] },
+      { name: 'Color', values: ['Burgundy'] }
     ]
   }
 ];
