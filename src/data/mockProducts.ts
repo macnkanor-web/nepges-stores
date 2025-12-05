@@ -8,6 +8,9 @@ import watchSilver from '@/assets/products/watch-silver.jpg';
 import hoodieBlack from '@/assets/products/hoodie-black.jpg';
 import hoodieNavy from '@/assets/products/hoodie-navy.jpg';
 import hoodieBurgundy from '@/assets/products/hoodie-burgundy.jpg';
+import macbookPro from '@/assets/products/macbook-pro.jpg';
+import hpElite from '@/assets/products/hp-elite.jpg';
+import hpProbook from '@/assets/products/hp-probook.jpg';
 
 export interface MockProduct {
   id: string;
@@ -622,6 +625,127 @@ export const mockProducts: MockProduct[] = [
     options: [
       { name: 'Size', values: ['Small', 'Medium', 'Large'] },
       { name: 'Color', values: ['Burgundy'] }
+    ]
+  },
+  {
+    id: '16',
+    title: 'MacBook Pro',
+    description: 'Powerful Apple MacBook Pro with M3 chip, stunning Retina display, and all-day battery life. The ultimate laptop for professionals and creatives.',
+    handle: 'macbook-pro',
+    tags: ['electronics', 'computers', 'laptops', 'premium', 'featured'],
+    price: 1999.99,
+    currencyCode: 'USD',
+    image: macbookPro,
+    images: [macbookPro],
+    variants: [
+      {
+        id: 'variant-16-1',
+        title: '14-inch / 512GB',
+        price: 1999.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '14-inch' },
+          { name: 'Storage', value: '512GB' }
+        ]
+      },
+      {
+        id: 'variant-16-2',
+        title: '14-inch / 1TB',
+        price: 2399.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '14-inch' },
+          { name: 'Storage', value: '1TB' }
+        ]
+      },
+      {
+        id: 'variant-16-3',
+        title: '16-inch / 512GB',
+        price: 2499.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Size', value: '16-inch' },
+          { name: 'Storage', value: '512GB' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Size', values: ['14-inch', '16-inch'] },
+      { name: 'Storage', values: ['512GB', '1TB'] }
+    ]
+  },
+  {
+    id: '17',
+    title: 'HP EliteBook',
+    description: 'Premium HP EliteBook for business professionals. Features enterprise-grade security, powerful performance, and sleek aluminum design.',
+    handle: 'hp-elitebook',
+    tags: ['electronics', 'computers', 'laptops', 'business', 'premium'],
+    price: 1499.99,
+    currencyCode: 'USD',
+    image: hpElite,
+    images: [hpElite],
+    variants: [
+      {
+        id: 'variant-17-1',
+        title: 'i5 / 256GB SSD',
+        price: 1499.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Processor', value: 'Intel i5' },
+          { name: 'Storage', value: '256GB SSD' }
+        ]
+      },
+      {
+        id: 'variant-17-2',
+        title: 'i7 / 512GB SSD',
+        price: 1799.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Processor', value: 'Intel i7' },
+          { name: 'Storage', value: '512GB SSD' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Processor', values: ['Intel i5', 'Intel i7'] },
+      { name: 'Storage', values: ['256GB SSD', '512GB SSD'] }
+    ]
+  },
+  {
+    id: '18',
+    title: 'HP ProBook',
+    description: 'Reliable HP ProBook for everyday business needs. Combines performance, security, and durability at an excellent value.',
+    handle: 'hp-probook',
+    tags: ['electronics', 'computers', 'laptops', 'business', 'new-arrival'],
+    price: 899.99,
+    currencyCode: 'USD',
+    image: hpProbook,
+    images: [hpProbook],
+    variants: [
+      {
+        id: 'variant-18-1',
+        title: 'i5 / 256GB SSD',
+        price: 899.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Processor', value: 'Intel i5' },
+          { name: 'Storage', value: '256GB SSD' }
+        ]
+      },
+      {
+        id: 'variant-18-2',
+        title: 'i5 / 512GB SSD',
+        price: 1049.99,
+        availableForSale: true,
+        selectedOptions: [
+          { name: 'Processor', value: 'Intel i5' },
+          { name: 'Storage', value: '512GB SSD' }
+        ]
+      }
+    ],
+    options: [
+      { name: 'Processor', values: ['Intel i5'] },
+      { name: 'Storage', values: ['256GB SSD', '512GB SSD'] }
     ]
   }
 ];
