@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Store from "./pages/Store";
 import ProductDetail from "./pages/ProductDetail";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import CustomerCarePage from "./pages/CustomerCarePage";
 import WalletPage from "./pages/WalletPage";
 import FAQ from "./pages/FAQ";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
