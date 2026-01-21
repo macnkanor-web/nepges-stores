@@ -135,25 +135,25 @@ export const VirtualWallet = () => {
   };
 
   return (
-    <section id="virtual-wallet" className="py-24 px-4">
+    <section id="virtual-wallet" className="py-12 sm:py-16 md:py-24 px-4">
       <div className="container mx-auto max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Virtual Wallet</h2>
-          <p className="text-muted-foreground text-lg">Manage your store account balance</p>
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">Virtual Wallet</h2>
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Manage your store account balance</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {/* Balance Card */}
           <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wallet className="w-5 h-5 text-primary" />
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Current Balance
               </CardTitle>
-              <CardDescription>Available funds in your account</CardDescription>
+              <CardDescription className="text-xs sm:text-sm">Available funds in your account</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-5xl font-bold text-primary mb-6">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4 sm:mb-6">
                 ${balance.toFixed(2)}
               </div>
               <Dialog>
@@ -199,12 +199,12 @@ export const VirtualWallet = () => {
 
           {/* Transaction History */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <History className="w-5 h-5 text-primary" />
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <History className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Recent Transactions
               </CardTitle>
-              <CardDescription>Your latest wallet activity</CardDescription>
+              <CardDescription className="text-xs sm:text-sm">Your latest wallet activity</CardDescription>
             </CardHeader>
             <CardContent>
               {transactions.length === 0 ? (

@@ -118,14 +118,14 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
         <div className="flex items-center justify-between py-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-3 group cursor-pointer hover:opacity-80 transition-opacity">
-                <div className="bg-gradient-to-br from-primary to-primary-glow p-2.5 rounded-xl group-hover:scale-105 transition-transform shadow-md">
-                  <Store className="h-5 w-5 text-primary-foreground" />
+              <button className="flex items-center gap-2 sm:gap-3 group cursor-pointer hover:opacity-80 transition-opacity">
+                <div className="bg-gradient-to-br from-primary to-primary-glow p-2 sm:p-2.5 rounded-lg sm:rounded-xl group-hover:scale-105 transition-transform shadow-md">
+                  <Store className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
                 </div>
-                <span className="text-2xl font-bold">
+                <span className="text-lg sm:text-2xl font-bold hidden xs:inline">
                   Nepges <span className="text-gradient">Store</span>
                 </span>
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-56">
@@ -164,7 +164,7 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
             </Button>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList>
                 {categories.map((category) => {

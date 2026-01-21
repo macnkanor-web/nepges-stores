@@ -113,7 +113,7 @@ const Auth = () => {
 
   if (isForgotPassword) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-6">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4 sm:p-6">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Forgot Password</CardTitle>
@@ -153,9 +153,9 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4 sm:p-6">
       <Card className="w-full max-w-md">
-        <CardHeader>
+        <CardHeader className="pb-4 sm:pb-6">
           <CardTitle>{isLogin ? "Welcome Back" : "Create Account"}</CardTitle>
           <CardDescription>
             {isLogin
