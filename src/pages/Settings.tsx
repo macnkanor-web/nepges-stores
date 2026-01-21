@@ -136,14 +136,14 @@ const Settings = () => {
     <div className="min-h-screen bg-background">
       <StoreNavbar products={mockProducts} />
       <main className="pt-20 pb-16">
-        <div className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
           <div className="relative max-w-4xl mx-auto">
-            <div className="text-center mb-16 animate-fade-in">
-              <h1 className="text-5xl md:text-6xl font-display font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
+            <div className="text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
                 Settings
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
                 Manage your account and app preferences
               </p>
             </div>
@@ -165,9 +165,9 @@ const Settings = () => {
                 <CardContent className="space-y-4">
                   {user ? (
                     <>
-                      <div className="flex flex-col items-center gap-4 py-4">
+                      <div className="flex flex-col items-center gap-3 sm:gap-4 py-4">
                         <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
-                          <Avatar className="h-32 w-32">
+                          <Avatar className="h-24 w-24 sm:h-32 sm:w-32">
                             <AvatarImage src={avatarUrl || undefined} alt="Profile picture" />
                             <AvatarFallback className="text-3xl">
                               {user.email?.charAt(0).toUpperCase()}
@@ -195,19 +195,19 @@ const Settings = () => {
                         </Button>
                       </div>
                       <Separator />
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Email</span>
-                        <span className="font-medium">{user.email}</span>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2">
+                        <span className="text-muted-foreground text-sm sm:text-base">Email</span>
+                        <span className="font-medium text-sm sm:text-base break-all">{user.email}</span>
                       </div>
                       <Separator />
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Account Status</span>
-                        <span className="font-medium text-green-600">Active</span>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2">
+                        <span className="text-muted-foreground text-sm sm:text-base">Account Status</span>
+                        <span className="font-medium text-green-600 text-sm sm:text-base">Active</span>
                       </div>
                       <Separator />
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Member Since</span>
-                        <span className="font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2">
+                        <span className="text-muted-foreground text-sm sm:text-base">Member Since</span>
+                        <span className="font-medium text-sm sm:text-base">
                           {new Date(user.created_at).toLocaleDateString()}
                         </span>
                       </div>
@@ -237,19 +237,19 @@ const Settings = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Order Updates</span>
-                    <span className="text-sm text-primary">Enabled</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Order Updates</span>
+                    <span className="text-xs sm:text-sm text-primary">Enabled</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Promotions</span>
-                    <span className="text-sm text-primary">Enabled</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Promotions</span>
+                    <span className="text-xs sm:text-sm text-primary">Enabled</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Newsletter</span>
-                    <span className="text-sm text-primary">Enabled</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Newsletter</span>
+                    <span className="text-xs sm:text-sm text-primary">Enabled</span>
                   </div>
                 </CardContent>
               </Card>
@@ -270,19 +270,19 @@ const Settings = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Two-Factor Authentication</span>
-                    <span className="text-sm text-muted-foreground">Not Enabled</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Two-Factor Authentication</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Not Enabled</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Password</span>
-                    <Button variant="outline" size="sm">Change Password</Button>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Password</span>
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">Change Password</Button>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Privacy Settings</span>
-                    <Button variant="outline" size="sm">Manage</Button>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Privacy Settings</span>
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">Manage</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -326,18 +326,18 @@ const Settings = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Version</span>
-                    <span className="font-medium">1.0.0</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Version</span>
+                    <span className="font-medium text-sm sm:text-base">1.0.0</span>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Terms of Service</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Terms of Service</span>
                     <Button variant="ghost" size="sm">View</Button>
                   </div>
                   <Separator />
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Privacy Policy</span>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-muted-foreground text-sm sm:text-base">Privacy Policy</span>
                     <Button variant="ghost" size="sm">View</Button>
                   </div>
                   <Separator />

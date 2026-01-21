@@ -116,9 +116,9 @@ const ProductDetail = () => {
           </Button>
         </Link>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
           {/* Product Image */}
-          <div className="aspect-square bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-2xl overflow-hidden">
+          <div className="aspect-square bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-xl sm:rounded-2xl overflow-hidden">
             {product.image ? (
               <img 
                 src={product.image}
@@ -127,16 +127,16 @@ const ProductDetail = () => {
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <ShoppingCart className="h-24 w-24 text-muted-foreground/30" />
+                <ShoppingCart className="h-16 w-16 sm:h-24 sm:w-24 text-muted-foreground/30" />
               </div>
             )}
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <h1 className="text-4xl font-bold mb-4">{product.title}</h1>
-              <p className="text-3xl font-bold text-gradient">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">{product.title}</h1>
+              <p className="text-2xl sm:text-3xl font-bold text-gradient">
                 {product.currencyCode} {selectedVariant?.price.toFixed(2) || product.price.toFixed(2)}
               </p>
             </div>
@@ -149,8 +149,8 @@ const ProductDetail = () => {
 
             {/* Product Options */}
             {product.options.map((option) => (
-              <div key={option.name} className="space-y-3">
-                <label className="text-sm font-semibold uppercase tracking-wide">
+              <div key={option.name} className="space-y-2 sm:space-y-3">
+                <label className="text-xs sm:text-sm font-semibold uppercase tracking-wide">
                   {option.name}
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -159,7 +159,7 @@ const ProductDetail = () => {
                       key={value}
                       variant={selectedOptions[option.name] === value ? "default" : "outline"}
                       onClick={() => handleOptionChange(option.name, value)}
-                      className="min-w-[80px]"
+                      className="min-w-[60px] sm:min-w-[80px] text-xs sm:text-sm px-2 sm:px-4"
                     >
                       {value}
                     </Button>

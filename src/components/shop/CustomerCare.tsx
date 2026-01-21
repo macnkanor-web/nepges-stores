@@ -21,14 +21,14 @@ export const CustomerCare = () => {
   };
 
   return (
-    <section id="customer-care" className="py-24 px-4 bg-secondary/10">
+    <section id="customer-care" className="py-12 sm:py-16 md:py-24 px-4 bg-secondary/10">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Customer Care</h2>
-          <p className="text-muted-foreground text-lg">We're here to help you 24/7</p>
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">Customer Care</h2>
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg">We're here to help you 24/7</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Contact Info */}
           <div className="space-y-6">
             <Card>
