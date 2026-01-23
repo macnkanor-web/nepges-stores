@@ -101,28 +101,14 @@ export const VirtualWallet = () => {
     setLoading(true);
 
     try {
-      // Update wallet balance
-      const newBalance = balance + depositAmount;
-      const { error: updateError } = await supabase
-        .from("wallets")
-        .update({ balance: newBalance })
-        .eq("user_id", userId);
+      // Use atomic RPC to prevent race conditions
+      const { data, error } = await supabase.rpc("add_wallet_funds", {
+        p_amount: depositAmount,
+      });
 
-      if (updateError) throw updateError;
+      if (error) throw error;
 
-      // Add transaction record
-      const { error: transactionError } = await supabase
-        .from("wallet_transactions")
-        .insert({
-          user_id: userId,
-          amount: depositAmount,
-          transaction_type: "deposit",
-          description: `Added $${depositAmount.toFixed(2)} to wallet`,
-        });
-
-      if (transactionError) throw transactionError;
-
-      setBalance(newBalance);
+      setBalance(data);
       setAmount("");
       toast.success(`Successfully added $${depositAmount.toFixed(2)} to your wallet!`);
       await fetchTransactions(userId);
