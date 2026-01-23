@@ -97,7 +97,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      add_wallet_funds: { Args: { p_amount: number }; Returns: number }
     }
     Enums: {
       [_ in never]: never
