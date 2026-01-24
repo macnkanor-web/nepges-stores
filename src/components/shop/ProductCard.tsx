@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ShoppingCart, Store } from "lucide-react";
 import { MockProduct } from "@/data/mockProducts";
 import { useCartStore } from "@/stores/cartStore";
+import { WishlistButton } from "@/components/shop/WishlistButton";
 import { toast } from "sonner";
 
 interface ProductCardProps {
@@ -40,7 +41,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <Card className="overflow-hidden hover-lift group border-border/50 bg-card/50 backdrop-blur-sm">
+    <Card className="overflow-hidden hover-lift group border-border/50 bg-card/50 backdrop-blur-sm relative">
+      {/* Wishlist Button */}
+      <div className="absolute top-3 right-3 z-10">
+        <WishlistButton product={product} variant="icon" />
+      </div>
+      
       <Link to={`/store/product/${product.handle}`}>
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-secondary/30 to-secondary/10">
           {product.image ? (

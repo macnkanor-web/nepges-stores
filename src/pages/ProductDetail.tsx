@@ -5,11 +5,15 @@ import { ShoppingCart, ArrowLeft, Loader2 } from "lucide-react";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { mockProducts, MockProduct } from "@/data/mockProducts";
 import { useCartStore } from "@/stores/cartStore";
+import { useRecentlyViewedStore } from "@/stores/recentlyViewedStore";
+import { WishlistButton } from "@/components/shop/WishlistButton";
+import { RecentlyViewed } from "@/components/shop/RecentlyViewed";
 import { toast } from "sonner";
 
 const ProductDetail = () => {
   const { handle } = useParams();
   const addItem = useCartStore(state => state.addItem);
+  const addToRecentlyViewed = useRecentlyViewedStore(state => state.addProduct);
   const [product, setProduct] = useState<MockProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
@@ -20,6 +24,7 @@ const ProductDetail = () => {
     
     if (foundProduct) {
       setProduct(foundProduct);
+      addToRecentlyViewed(foundProduct);
       
       // Set initial selected variant
       const firstVariant = foundProduct.variants[0];
@@ -36,7 +41,7 @@ const ProductDetail = () => {
     }
     
     setLoading(false);
-  }, [handle]);
+  }, [handle, addToRecentlyViewed]);
 
   const handleOptionChange = (optionName: string, value: string) => {
     const newSelectedOptions = {
@@ -170,15 +175,19 @@ const ProductDetail = () => {
 
             {/* Add to Cart Button */}
             <div className="pt-6 border-t">
-              <Button
-                size="lg"
-                className="w-full md:w-auto gap-2"
-                onClick={handleAddToCart}
-                disabled={!selectedVariant?.availableForSale}
-              >
-                <ShoppingCart className="h-5 w-5" />
-                {selectedVariant?.availableForSale ? 'Add to Cart' : 'Out of Stock'}
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 md:flex-none gap-2"
+                  onClick={handleAddToCart}
+                  disabled={!selectedVariant?.availableForSale}
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  {selectedVariant?.availableForSale ? 'Add to Cart' : 'Out of Stock'}
+                </Button>
+                
+                <WishlistButton product={product} variant="default" />
+              </div>
               
               {selectedVariant?.availableForSale && (
                 <p className="text-sm text-muted-foreground mt-4">
@@ -188,6 +197,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+        
+        {/* Recently Viewed Section */}
+        <RecentlyViewed excludeHandle={product.handle} />
       </div>
     </div>
   );
