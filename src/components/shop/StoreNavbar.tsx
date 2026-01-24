@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut, ChevronDown } from "lucide-react";
+import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut, ChevronDown, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CartDrawer } from "./CartDrawer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useState, useEffect } from "react";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -43,6 +44,12 @@ interface StoreNavbarProps {
 export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const { items: wishlistItems, fetchWishlist } = useWishlistStore();
+  
+  // Fetch wishlist on mount
+  useEffect(() => {
+    fetchWishlist();
+  }, [fetchWishlist]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -142,6 +149,9 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
                 <Link to="/wallet" className="cursor-pointer">Virtual Wallet</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
+                <Link to="/wishlist" className="cursor-pointer">Wishlist</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link to="/faq" className="cursor-pointer">FAQ</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -149,7 +159,6 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          
           <div className="flex-1 max-w-md mx-8 hidden md:block">
             <Button
               variant="outline"
@@ -238,6 +247,16 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
             </Button>
             <div className="h-8 w-px bg-border hidden lg:block" />
             <ThemeToggle />
+            <Link to="/wishlist">
+              <Button variant="ghost" size="icon" className="relative" title="Wishlist">
+                <Heart className="h-5 w-5" />
+                {wishlistItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-medium">
+                    {wishlistItems.length}
+                  </span>
+                )}
+              </Button>
+            </Link>
             <CartDrawer />
             <Button
               variant="ghost"
