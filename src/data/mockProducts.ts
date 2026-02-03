@@ -11,6 +11,12 @@ import hoodieBurgundy from '@/assets/products/hoodie-burgundy.jpg';
 import macbookPro from '@/assets/products/macbook-pro.jpg';
 import hpElite from '@/assets/products/hp-elite.jpg';
 import hpProbook from '@/assets/products/hp-probook.jpg';
+import smartphonePro from '@/assets/products/smartphone-pro.jpg';
+import smartwatchElite from '@/assets/products/smartwatch-elite.jpg';
+import headphonesPro from '@/assets/products/headphones-pro.jpg';
+import laptopUltra from '@/assets/products/laptop-ultra.jpg';
+import earbudsWireless from '@/assets/products/earbuds-wireless.jpg';
+import fitnessBand from '@/assets/products/fitness-band.jpg';
 
 export interface MockProduct {
   id: string;
@@ -47,8 +53,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'smartphones', 'featured', 'new-arrival'],
     price: 899.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/smartphone-pro.jpg',
-    images: ['/src/assets/products/smartphone-pro.jpg'],
+    image: smartphonePro,
+    images: [smartphonePro],
     variants: [
       {
         id: 'variant-1-1',
@@ -94,8 +100,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'wearables', 'fitness', 'featured'],
     price: 349.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/smartwatch-elite.jpg',
-    images: ['/src/assets/products/smartwatch-elite.jpg'],
+    image: smartwatchElite,
+    images: [smartwatchElite],
     variants: [
       {
         id: 'variant-2-1',
@@ -131,8 +137,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'audio', 'headphones', 'premium'],
     price: 299.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/headphones-pro.jpg',
-    images: ['/src/assets/products/headphones-pro.jpg'],
+    image: headphonesPro,
+    images: [headphonesPro],
     variants: [
       {
         id: 'variant-3-1',
@@ -156,8 +162,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'computers', 'laptops', 'featured', 'premium'],
     price: 1299.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/laptop-ultra.jpg',
-    images: ['/src/assets/products/laptop-ultra.jpg'],
+    image: laptopUltra,
+    images: [laptopUltra],
     variants: [
       {
         id: 'variant-4-1',
@@ -190,8 +196,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'audio', 'earbuds', 'new-arrival'],
     price: 149.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/earbuds-wireless.jpg',
-    images: ['/src/assets/products/earbuds-wireless.jpg'],
+    image: earbudsWireless,
+    images: [earbudsWireless],
     variants: [
       {
         id: 'variant-5-1',
@@ -215,8 +221,8 @@ export const mockProducts: MockProduct[] = [
     tags: ['electronics', 'wearables', 'fitness', 'health'],
     price: 79.99,
     currencyCode: 'USD',
-    image: '/src/assets/products/fitness-band.jpg',
-    images: ['/src/assets/products/fitness-band.jpg'],
+    image: fitnessBand,
+    images: [fitnessBand],
     variants: [
       {
         id: 'variant-6-1',
