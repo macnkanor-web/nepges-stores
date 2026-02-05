@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
-import { ProductCard } from "@/components/shop/ProductCard";
+import { AnimatedProductCard } from "@/components/shop/AnimatedProductCard";
 import { mockProducts } from "@/data/mockProducts";
 import { Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -149,7 +150,12 @@ const Store = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <motion.div 
+      className="min-h-screen bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <StoreNavbar products={products} />
       
       {/* Hero Section */}
@@ -158,18 +164,38 @@ const Store = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.1),transparent_50%)]" />
         
-        <div className="container mx-auto text-center relative z-10 animate-fade-in">
-          <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-gradient-to-r from-primary/10 to-primary/5 rounded-full border border-primary/20 shadow-sm">
+        <motion.div 
+          className="container mx-auto text-center relative z-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-gradient-to-r from-primary/10 to-primary/5 rounded-full border border-primary/20 shadow-sm"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+          >
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">Premium Quality Products</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+          </motion.div>
+          <motion.h1 
+            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             Welcome to <span className="text-gradient">Nepges Store</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+          </motion.h1>
+          <motion.p 
+            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             Discover premium devices, cutting-edge electronics, stylish accessories, and fashion-forward apparel. Experience excellence in every product.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </section>
 
       {/* Products Section */}
@@ -285,11 +311,22 @@ const Store = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 stagger-animation">
-                {filteredAndSortedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              <motion.div 
+                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+              >
+                {filteredAndSortedProducts.map((product, index) => (
+                  <AnimatedProductCard key={product.id} product={product} index={index} />
                 ))}
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
@@ -310,7 +347,7 @@ const Store = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </motion.div>
   );
 };
 
