@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { StoreNavbar } from "@/components/shop/StoreNavbar";
 import { AnimatedProductCard } from "@/components/shop/AnimatedProductCard";
 import { mockProducts } from "@/data/mockProducts";
-import { Store as StoreIcon, SlidersHorizontal, X } from "lucide-react";
+import { Store as StoreIcon, SlidersHorizontal, X, Sparkles, ShoppingBag, Star, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ThreeBackground } from "@/components/ThreeBackground";
 import {
   Select,
   SelectContent,
@@ -38,6 +39,12 @@ const priceRanges = [
   { id: "200-plus", name: "$200+", min: 200, max: Infinity },
 ];
 
+const features = [
+  { icon: ShoppingBag, title: "Premium Selection", desc: "Curated products" },
+  { icon: Star, title: "Top Quality", desc: "Best brands only" },
+  { icon: TrendingUp, title: "Best Prices", desc: "Unbeatable deals" },
+];
+
 const Store = () => {
   const products = mockProducts;
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -56,7 +63,6 @@ const Store = () => {
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
 
-    // Filter by category
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(product => {
         const productTags = product.tags?.join(',').toLowerCase() || "";
@@ -67,7 +73,6 @@ const Store = () => {
       });
     }
 
-    // Filter by price
     const priceRange = priceRanges.find(r => r.id === selectedPriceRange);
     if (priceRange && priceRange.id !== "all") {
       filtered = filtered.filter(product => {
@@ -75,7 +80,6 @@ const Store = () => {
       });
     }
 
-    // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-asc":
@@ -97,7 +101,7 @@ const Store = () => {
   const FilterContent = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="font-semibold mb-3">Categories</h3>
+        <h3 className="font-semibold mb-3 text-foreground">Categories</h3>
         <div className="space-y-2">
           {categories.map(category => (
             <div key={category.id} className="flex items-center space-x-2">
@@ -105,10 +109,11 @@ const Store = () => {
                 id={category.id}
                 checked={selectedCategories.includes(category.id)}
                 onCheckedChange={() => toggleCategory(category.id)}
+                className="border-primary data-[state=checked]:bg-primary"
               />
               <Label
                 htmlFor={category.id}
-                className="text-sm font-normal cursor-pointer"
+                className="text-sm font-normal cursor-pointer text-foreground"
               >
                 {category.name}
               </Label>
@@ -118,9 +123,9 @@ const Store = () => {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">Price Range</h3>
+        <h3 className="font-semibold mb-3 text-foreground">Price Range</h3>
         <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full border-border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -136,7 +141,7 @@ const Store = () => {
       {(selectedCategories.length > 0 || selectedPriceRange !== "all") && (
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full border-primary/30 hover:bg-primary/10"
           onClick={() => {
             setSelectedCategories([]);
             setSelectedPriceRange("all");
@@ -158,61 +163,148 @@ const Store = () => {
     >
       <StoreNavbar products={products} />
       
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.1),transparent_50%)]" />
+      {/* Immersive Hero Section with 3D Background */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* 3D Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a0f08] via-[#2d1810] to-[#1a0f08]">
+          <ThreeBackground />
+        </div>
         
-        <motion.div 
-          className="container mx-auto text-center relative z-10"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <motion.div 
-            className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-gradient-to-r from-primary/10 to-primary/5 rounded-full border border-primary/20 shadow-sm"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
+        {/* Gradient overlays for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,transparent_0%,hsl(var(--background)/0.3)_70%)]" />
+        
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Premium Quality Products</span>
+            {/* Badge */}
+            <motion.div 
+              className="inline-flex items-center gap-2 mb-8 px-6 py-3 bg-primary/20 backdrop-blur-md rounded-full border border-primary/40 shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">Premium Collection 2025</span>
+            </motion.div>
+            
+            {/* Main Title */}
+            <motion.h1 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              <span className="text-cream-100 drop-shadow-lg">Welcome to</span>
+              <br />
+              <span className="text-gradient-warm drop-shadow-2xl">Nepges Store</span>
+            </motion.h1>
+            
+            {/* Subtitle */}
+            <motion.p 
+              className="text-lg md:text-xl lg:text-2xl text-cream-200/90 max-w-3xl mx-auto mb-10 leading-relaxed font-light"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              Discover premium devices, cutting-edge electronics, and fashion-forward style. 
+              Experience excellence in every product.
+            </motion.p>
+            
+            {/* Feature Pills */}
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4 mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              {features.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  className="flex items-center gap-2 px-4 py-2 bg-card/60 backdrop-blur-sm rounded-full border border-border/50"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 + index * 0.1, duration: 0.4 }}
+                >
+                  <feature.icon className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-foreground">{feature.title}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+            >
+              <Button 
+                size="lg" 
+                className="bg-gradient-warm text-primary-foreground hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 text-lg px-8 py-6 rounded-full font-semibold"
+                onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <ShoppingBag className="w-5 h-5 mr-2" />
+                Explore Collection
+              </Button>
+            </motion.div>
           </motion.div>
-          <motion.h1 
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+        </div>
+        
+        {/* Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-6 h-10 rounded-full border-2 border-cream-200/50 flex items-start justify-center p-2"
           >
-            Welcome to <span className="text-gradient">Nepges Store</span>
-          </motion.h1>
-          <motion.p 
-            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            Discover premium devices, cutting-edge electronics, stylish accessories, and fashion-forward apparel. Experience excellence in every product.
-          </motion.p>
+            <motion.div 
+              className="w-1.5 h-1.5 rounded-full bg-primary"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
         </motion.div>
       </section>
 
       {/* Products Section */}
-      <section id="products" className="container mx-auto px-4 pb-24">
-        <div className="mb-12 text-center animate-slide-up">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">Our Collection</h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Explore our carefully curated selection of premium products designed for modern living</p>
-        </div>
+      <section id="products" className="container mx-auto px-4 py-24">
+        <motion.div 
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground">
+            Our <span className="text-gradient">Collection</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-gradient-warm mx-auto mb-6 rounded-full" />
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Explore our carefully curated selection of premium products designed for modern living
+          </p>
+        </motion.div>
 
         {products.length > 0 && (
-          <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+          <motion.div 
+            className="flex items-center justify-between mb-10 gap-4 flex-wrap"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <div className="flex items-center gap-3">
-              {/* Mobile Filter Button */}
               <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="outline" className="lg:hidden">
+                  <Button variant="outline" className="lg:hidden border-primary/30 hover:bg-primary/10">
                     <SlidersHorizontal className="h-4 w-4 mr-2" />
                     Filters
                     {(selectedCategories.length > 0 || selectedPriceRange !== "all") && (
@@ -222,9 +314,9 @@ const Store = () => {
                     )}
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-80">
+                <SheetContent side="left" className="w-80 bg-card">
                   <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
+                    <SheetTitle className="text-foreground">Filters</SheetTitle>
                     <SheetDescription>
                       Refine your product search
                     </SheetDescription>
@@ -236,17 +328,17 @@ const Store = () => {
               </Sheet>
 
               <div className="text-sm text-muted-foreground">
-                Showing <span className="font-semibold text-foreground">{filteredAndSortedProducts.length}</span> of{" "}
+                Showing <span className="font-semibold text-primary">{filteredAndSortedProducts.length}</span> of{" "}
                 <span className="font-semibold text-foreground">{products.length}</span> products
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <Label htmlFor="sort" className="text-sm font-medium whitespace-nowrap">
+              <Label htmlFor="sort" className="text-sm font-medium whitespace-nowrap text-foreground">
                 Sort by:
               </Label>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger id="sort" className="w-[180px]">
+                <SelectTrigger id="sort" className="w-[180px] border-border">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -258,49 +350,63 @@ const Store = () => {
                 </SelectContent>
               </Select>
             </div>
-          </div>
+          </motion.div>
         )}
 
         <div className="flex gap-8">
           {/* Desktop Sidebar Filters */}
           {products.length > 0 && (
             <aside className="hidden lg:block w-64 flex-shrink-0">
-              <div className="sticky top-24 bg-card border border-border rounded-lg p-6 shadow-sm">
-                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <SlidersHorizontal className="h-5 w-5" />
+              <motion.div 
+                className="sticky top-24 bg-card border border-border rounded-2xl p-6 shadow-sm"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-foreground">
+                  <SlidersHorizontal className="h-5 w-5 text-primary" />
                   Filters
                 </h3>
                 <FilterContent />
-              </div>
+              </motion.div>
             </aside>
           )}
 
           {/* Products Grid */}
           <div className="flex-1">
             {products.length === 0 ? (
-          <div className="text-center py-20 animate-scale-in">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-secondary/20 mb-6">
-              <StoreIcon className="h-10 w-10 text-muted-foreground" />
-            </div>
-            <h3 className="text-2xl font-semibold mb-3">No Products Found</h3>
-            <p className="text-muted-foreground max-w-md mx-auto mb-6">
-              Our store is brand new! Create your first product by telling me what you'd like to sell - just describe the product, set a price, and I'll add it for you.
-            </p>
-              <p className="text-sm text-muted-foreground">
-                Example: "Add a smartphone for $599" or "Create a t-shirt product for $29.99"
-              </p>
-            </div>
-            ) : filteredAndSortedProducts.length === 0 ? (
-              <div className="text-center py-20 animate-scale-in">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-secondary/20 mb-6">
-                  <StoreIcon className="h-10 w-10 text-muted-foreground" />
+              <motion.div 
+                className="text-center py-20"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-6">
+                  <StoreIcon className="h-12 w-12 text-primary" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-3">No Products Match Your Filters</h3>
+                <h3 className="text-2xl font-semibold mb-3 text-foreground">No Products Found</h3>
+                <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                  Our store is brand new! Create your first product by telling me what you'd like to sell.
+                </p>
+              </motion.div>
+            ) : filteredAndSortedProducts.length === 0 ? (
+              <motion.div 
+                className="text-center py-20"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-6">
+                  <StoreIcon className="h-12 w-12 text-primary" />
+                </div>
+                <h3 className="text-2xl font-semibold mb-3 text-foreground">No Products Match Your Filters</h3>
                 <p className="text-muted-foreground max-w-md mx-auto mb-6">
                   Try adjusting your filters to see more products
                 </p>
                 <Button
                   variant="outline"
+                  className="border-primary/30 hover:bg-primary/10"
                   onClick={() => {
                     setSelectedCategories([]);
                     setSelectedPriceRange("all");
@@ -309,10 +415,10 @@ const Store = () => {
                   <X className="h-4 w-4 mr-2" />
                   Clear All Filters
                 </Button>
-              </div>
+              </motion.div>
             ) : (
               <motion.div 
-                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
                 initial="hidden"
                 animate="visible"
                 variants={{
@@ -323,9 +429,11 @@ const Store = () => {
                   }
                 }}
               >
-                {filteredAndSortedProducts.map((product, index) => (
-                  <AnimatedProductCard key={product.id} product={product} index={index} />
-                ))}
+                <AnimatePresence mode="popLayout">
+                  {filteredAndSortedProducts.map((product, index) => (
+                    <AnimatedProductCard key={product.id} product={product} index={index} />
+                  ))}
+                </AnimatePresence>
               </motion.div>
             )}
           </div>
@@ -333,18 +441,24 @@ const Store = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-secondary/30 to-secondary/10 border-t border-border/50 py-16 mt-20">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.05),transparent_70%)]" />
+      <footer className="relative bg-gradient-to-br from-card to-secondary/30 border-t border-border py-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,hsl(var(--primary)/0.08),transparent_60%)]" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-2">
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-4xl font-bold mb-3">
               Nepges <span className="text-gradient">Store</span>
             </h3>
-            <p className="text-muted-foreground text-lg">Your trusted shopping destination for premium products</p>
-          </div>
-          <div className="text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 Nepges Store. All rights reserved.</p>
-          </div>
+            <p className="text-muted-foreground text-lg mb-8">Your trusted destination for premium products</p>
+            <div className="text-sm text-muted-foreground">
+              <p>&copy; 2025 Nepges Store. All rights reserved.</p>
+            </div>
+          </motion.div>
         </div>
       </footer>
     </motion.div>
