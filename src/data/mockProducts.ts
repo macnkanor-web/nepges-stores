@@ -72,6 +72,24 @@ import powerBank from '@/assets/products/power-bank.jpg';
 import wirelessCharger from '@/assets/products/wireless-charger.jpg';
 import smartSpeaker from '@/assets/products/smart-speaker.jpg';
 
+// New product images - TVs
+import samsungTv65 from '@/assets/products/samsung-tv-65.jpg';
+import lgTv55 from '@/assets/products/lg-tv-55.jpg';
+import sonyTv75 from '@/assets/products/sony-tv-75.jpg';
+import tclTv50 from '@/assets/products/tcl-tv-50.jpg';
+
+// New product images - More Power Banks
+import ankerPowerbank from '@/assets/products/anker-powerbank.jpg';
+import baseusPowerbank from '@/assets/products/baseus-powerbank.jpg';
+
+// New product images - More Fashion
+import sweatshirtGrey from '@/assets/products/sweatshirt-grey.jpg';
+import bomberJacketOlive from '@/assets/products/bomber-jacket-olive.jpg';
+import poloNavy from '@/assets/products/polo-navy.jpg';
+import cargoPantsKhaki from '@/assets/products/cargo-pants-khaki.jpg';
+import runningShorts from '@/assets/products/running-shorts.jpg';
+import capBlack from '@/assets/products/cap-black.jpg';
+
 export interface MockProduct {
   id: string;
   title: string;
@@ -1222,6 +1240,247 @@ export const mockProducts: MockProduct[] = [
       { name: 'Waist', values: ['30', '32', '34'] },
       { name: 'Color', values: ['Blue'] }
     ]
+  },
+  // ==================== TELEVISIONS (4 Products) ====================
+  {
+    id: '57',
+    title: 'Samsung 65" OLED 4K Smart TV',
+    description: 'Stunning OLED display with perfect blacks, AI upscaling, and Smart TV features. Experience cinema at home.',
+    handle: 'samsung-65-oled-tv',
+    tags: ['electronics', 'tv', 'televisions', 'featured', 'samsung', 'premium'],
+    price: 1999.99,
+    currencyCode: 'USD',
+    image: samsungTv65,
+    images: [samsungTv65, lgTv55, sonyTv75],
+    variants: [
+      { id: 'v-samstv-1', title: '65" / Black', price: 1999.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '65"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-samstv-2', title: '75" / Black', price: 2799.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '75"' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['55"', '65"', '75"', '85"'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '58',
+    title: 'LG 55" OLED Smart TV',
+    description: 'Self-lit OLED pixels deliver stunning picture quality with webOS smart platform and Dolby Vision.',
+    handle: 'lg-55-oled-tv',
+    tags: ['electronics', 'tv', 'televisions', 'lg'],
+    price: 1499.99,
+    currencyCode: 'USD',
+    image: lgTv55,
+    images: [lgTv55, samsungTv65, sonyTv75],
+    variants: [
+      { id: 'v-lgtv-1', title: '55" / Black', price: 1499.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '55"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-lgtv-2', title: '65" / Black', price: 2199.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '65"' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['48"', '55"', '65"', '77"'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '59',
+    title: 'Sony Bravia 75" 4K TV',
+    description: 'Premium 4K HDR display with Cognitive Processor XR, Google TV, and immersive Acoustic Multi-Audio.',
+    handle: 'sony-bravia-75-tv',
+    tags: ['electronics', 'tv', 'televisions', 'sony', 'premium'],
+    price: 2499.99,
+    currencyCode: 'USD',
+    image: sonyTv75,
+    images: [sonyTv75, samsungTv65, lgTv55],
+    variants: [
+      { id: 'v-sonytv-1', title: '65" / Black', price: 1999.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '65"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-sonytv-2', title: '75" / Black', price: 2499.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '75"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-sonytv-3', title: '85" / Black', price: 3499.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '85"' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['55"', '65"', '75"', '85"'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+  {
+    id: '60',
+    title: 'TCL 50" 4K Smart TV',
+    description: 'Affordable 4K entertainment with Roku built-in, HDR support, and sleek modern design.',
+    handle: 'tcl-50-4k-tv',
+    tags: ['electronics', 'tv', 'televisions', 'budget-friendly'],
+    price: 349.99,
+    currencyCode: 'USD',
+    image: tclTv50,
+    images: [tclTv50, lgTv55, samsungTv65],
+    variants: [
+      { id: 'v-tcltv-1', title: '43" / Black', price: 279.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '43"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-tcltv-2', title: '50" / Black', price: 349.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '50"' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-tcltv-3', title: '55" / Black', price: 399.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: '55"' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['43"', '50"', '55"', '65"'] },
+      { name: 'Color', values: ['Black'] }
+    ]
+  },
+
+  // ==================== MORE POWER BANKS (2 Products) ====================
+  {
+    id: '61',
+    title: 'Anker 20000mAh Power Bank',
+    description: 'High-capacity portable charger with PowerIQ technology, dual USB-A ports, and LED display.',
+    handle: 'anker-20000-power-bank',
+    tags: ['electronics', 'accessories', 'charging', 'featured'],
+    price: 49.99,
+    currencyCode: 'USD',
+    image: ankerPowerbank,
+    images: [ankerPowerbank, powerBank, baseusPowerbank],
+    variants: [
+      { id: 'v-anker-1', title: '20000mAh / Black', price: 49.99, availableForSale: true, selectedOptions: [{ name: 'Capacity', value: '20000mAh' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-anker-2', title: '26800mAh / Black', price: 65.99, availableForSale: true, selectedOptions: [{ name: 'Capacity', value: '26800mAh' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Capacity', values: ['10000mAh', '20000mAh', '26800mAh'] },
+      { name: 'Color', values: ['Black', 'White'] }
+    ]
+  },
+  {
+    id: '62',
+    title: 'Baseus 30000mAh Power Bank',
+    description: 'Ultra high capacity with digital display, 65W fast charging, and multiple ports for all devices.',
+    handle: 'baseus-30000-power-bank',
+    tags: ['electronics', 'accessories', 'charging', 'fast-charging'],
+    price: 79.99,
+    currencyCode: 'USD',
+    image: baseusPowerbank,
+    images: [baseusPowerbank, ankerPowerbank, powerBank],
+    variants: [
+      { id: 'v-baseus-1', title: '30000mAh / Black', price: 79.99, availableForSale: true, selectedOptions: [{ name: 'Capacity', value: '30000mAh' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-baseus-2', title: '30000mAh / White', price: 79.99, availableForSale: true, selectedOptions: [{ name: 'Capacity', value: '30000mAh' }, { name: 'Color', value: 'White' }] }
+    ],
+    options: [
+      { name: 'Capacity', values: ['20000mAh', '30000mAh'] },
+      { name: 'Color', values: ['Black', 'White'] }
+    ]
+  },
+
+  // ==================== MORE FASHION (6 Products) ====================
+  {
+    id: '63',
+    title: 'Classic Crewneck Sweatshirt',
+    description: 'Ultra-soft premium cotton fleece sweatshirt with ribbed cuffs. Perfect for layering.',
+    handle: 'classic-crewneck-sweatshirt',
+    tags: ['fashion', 'clothing', 'casual', 'featured'],
+    price: 59.99,
+    currencyCode: 'USD',
+    image: sweatshirtGrey,
+    images: [sweatshirtGrey, hoodieBlack],
+    variants: [
+      { id: 'v-sweat-1', title: 'S / Grey', price: 59.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'S' }, { name: 'Color', value: 'Grey' }] },
+      { id: 'v-sweat-2', title: 'M / Grey', price: 59.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'M' }, { name: 'Color', value: 'Grey' }] },
+      { id: 'v-sweat-3', title: 'L / Grey', price: 59.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'L' }, { name: 'Color', value: 'Grey' }] },
+      { id: 'v-sweat-4', title: 'XL / Grey', price: 59.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'XL' }, { name: 'Color', value: 'Grey' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['S', 'M', 'L', 'XL', 'XXL'] },
+      { name: 'Color', values: ['Grey', 'Black', 'Navy'] }
+    ]
+  },
+  {
+    id: '64',
+    title: 'Bomber Jacket',
+    description: 'Stylish bomber jacket with satin finish, ribbed cuffs and hem, and comfortable fit.',
+    handle: 'bomber-jacket-olive',
+    tags: ['fashion', 'clothing', 'outerwear', 'new-arrival'],
+    price: 129.99,
+    currencyCode: 'USD',
+    image: bomberJacketOlive,
+    images: [bomberJacketOlive, jacketLeather],
+    variants: [
+      { id: 'v-bomber-1', title: 'M / Olive', price: 129.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'M' }, { name: 'Color', value: 'Olive' }] },
+      { id: 'v-bomber-2', title: 'L / Olive', price: 129.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'L' }, { name: 'Color', value: 'Olive' }] },
+      { id: 'v-bomber-3', title: 'XL / Olive', price: 129.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'XL' }, { name: 'Color', value: 'Olive' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['S', 'M', 'L', 'XL'] },
+      { name: 'Color', values: ['Olive', 'Black', 'Navy'] }
+    ]
+  },
+  {
+    id: '65',
+    title: 'Classic Polo Shirt',
+    description: 'Premium cotton pique polo with classic collar design. Versatile for casual and smart-casual looks.',
+    handle: 'classic-polo-shirt',
+    tags: ['fashion', 'clothing', 'casual'],
+    price: 44.99,
+    currencyCode: 'USD',
+    image: poloNavy,
+    images: [poloNavy, tshirtBlack],
+    variants: [
+      { id: 'v-polo-1', title: 'S / Navy', price: 44.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'S' }, { name: 'Color', value: 'Navy' }] },
+      { id: 'v-polo-2', title: 'M / Navy', price: 44.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'M' }, { name: 'Color', value: 'Navy' }] },
+      { id: 'v-polo-3', title: 'L / Navy', price: 44.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'L' }, { name: 'Color', value: 'Navy' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['S', 'M', 'L', 'XL'] },
+      { name: 'Color', values: ['Navy', 'White', 'Black', 'Red'] }
+    ]
+  },
+  {
+    id: '66',
+    title: 'Tactical Cargo Pants',
+    description: 'Durable cargo pants with multiple pockets for utility and comfort. Perfect for outdoor adventures.',
+    handle: 'tactical-cargo-pants',
+    tags: ['fashion', 'clothing', 'outdoor'],
+    price: 69.99,
+    currencyCode: 'USD',
+    image: cargoPantsKhaki,
+    images: [cargoPantsKhaki, jeansDenim],
+    variants: [
+      { id: 'v-cargo-1', title: '30 / Khaki', price: 69.99, availableForSale: true, selectedOptions: [{ name: 'Waist', value: '30' }, { name: 'Color', value: 'Khaki' }] },
+      { id: 'v-cargo-2', title: '32 / Khaki', price: 69.99, availableForSale: true, selectedOptions: [{ name: 'Waist', value: '32' }, { name: 'Color', value: 'Khaki' }] },
+      { id: 'v-cargo-3', title: '34 / Khaki', price: 69.99, availableForSale: true, selectedOptions: [{ name: 'Waist', value: '34' }, { name: 'Color', value: 'Khaki' }] },
+      { id: 'v-cargo-4', title: '36 / Khaki', price: 69.99, availableForSale: true, selectedOptions: [{ name: 'Waist', value: '36' }, { name: 'Color', value: 'Khaki' }] }
+    ],
+    options: [
+      { name: 'Waist', values: ['28', '30', '32', '34', '36'] },
+      { name: 'Color', values: ['Khaki', 'Black', 'Olive'] }
+    ]
+  },
+  {
+    id: '67',
+    title: 'Athletic Running Shorts',
+    description: 'Lightweight running shorts with moisture-wicking fabric and built-in liner for maximum comfort.',
+    handle: 'athletic-running-shorts',
+    tags: ['fashion', 'clothing', 'sportswear', 'fitness'],
+    price: 34.99,
+    currencyCode: 'USD',
+    image: runningShorts,
+    images: [runningShorts],
+    variants: [
+      { id: 'v-shorts-1', title: 'S / Black', price: 34.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'S' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-shorts-2', title: 'M / Black', price: 34.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'M' }, { name: 'Color', value: 'Black' }] },
+      { id: 'v-shorts-3', title: 'L / Black', price: 34.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'L' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['S', 'M', 'L', 'XL'] },
+      { name: 'Color', values: ['Black', 'Navy', 'Grey'] }
+    ]
+  },
+  {
+    id: '68',
+    title: 'Classic Baseball Cap',
+    description: 'Premium fitted cap with structured crown and curved brim. Essential streetwear accessory.',
+    handle: 'classic-baseball-cap',
+    tags: ['fashion', 'accessories', 'headwear'],
+    price: 29.99,
+    currencyCode: 'USD',
+    image: capBlack,
+    images: [capBlack],
+    variants: [
+      { id: 'v-cap-1', title: 'One Size / Black', price: 29.99, availableForSale: true, selectedOptions: [{ name: 'Size', value: 'One Size' }, { name: 'Color', value: 'Black' }] }
+    ],
+    options: [
+      { name: 'Size', values: ['One Size'] },
+      { name: 'Color', values: ['Black', 'Navy', 'White'] }
+    ]
   }
 ];
 
@@ -1245,7 +1504,8 @@ export const getProductsByCategory = (category: string): MockProduct[] => {
     'sneakers': ['sneakers', 'footwear'],
     'watches': ['watches', 'wearables'],
     'audio': ['audio', 'headphones', 'earbuds', 'speakers'],
-    'fashion': ['clothing', 'accessories', 'eyewear']
+    'fashion': ['clothing', 'accessories', 'eyewear', 'headwear', 'sportswear', 'outerwear'],
+    'tv': ['tv', 'televisions']
   };
   
   const tags = categoryMap[category] || [category];
