@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut, ChevronDown, Heart } from "lucide-react";
+import { Store, Smartphone, Watch, Headphones, Shirt, Search, LogOut, ChevronDown, Heart, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CartDrawer } from "./CartDrawer";
@@ -152,6 +152,9 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
                 <Link to="/wishlist" className="cursor-pointer">Wishlist</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
+                <Link to="/orders" className="cursor-pointer">Order History</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link to="/faq" className="cursor-pointer">FAQ</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -247,6 +250,11 @@ export const StoreNavbar = ({ products = [] }: StoreNavbarProps) => {
             </Button>
             <div className="h-8 w-px bg-border hidden lg:block" />
             <ThemeToggle />
+            <Link to="/orders">
+              <Button variant="ghost" size="icon" title="Order History">
+                <Package className="h-5 w-5" />
+              </Button>
+            </Link>
             <Link to="/wishlist">
               <Button variant="ghost" size="icon" className="relative" title="Wishlist">
                 <Heart className="h-5 w-5" />

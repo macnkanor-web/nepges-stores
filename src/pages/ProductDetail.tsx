@@ -8,6 +8,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { useRecentlyViewedStore } from "@/stores/recentlyViewedStore";
 import { WishlistButton } from "@/components/shop/WishlistButton";
 import { RecentlyViewed } from "@/components/shop/RecentlyViewed";
+import { ProductReviews } from "@/components/shop/ProductReviews";
 import { toast } from "sonner";
 
 const ProductDetail = () => {
@@ -197,6 +198,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+        
+        {/* Product Reviews Section */}
+        <ProductReviews productHandle={product.handle} />
         
         {/* Recently Viewed Section */}
         <RecentlyViewed excludeHandle={product.handle} />
