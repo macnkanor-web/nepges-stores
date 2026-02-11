@@ -5,6 +5,8 @@ import { mockProducts } from "@/data/mockProducts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Bell, Shield, CreditCard, Package, LogOut, Mail, Phone, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +21,8 @@ const Settings = () => {
   const [loading, setLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [savingName, setSavingName] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -46,12 +50,38 @@ const Settings = () => {
   const loadProfile = async (userId: string) => {
     const { data } = await supabase
       .from('profiles')
-      .select('avatar_url')
+      .select('avatar_url, full_name')
       .eq('user_id', userId)
       .maybeSingle();
     
     if (data?.avatar_url) {
       setAvatarUrl(data.avatar_url);
+    }
+    if (data?.full_name) {
+      setFullName(data.full_name);
+    }
+  };
+
+  const handleSaveName = async () => {
+    if (!user) return;
+    setSavingName(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({ user_id: user.id, full_name: fullName.trim() });
+      if (error) throw error;
+      toast({
+        title: "Profile updated",
+        description: "Your name has been saved.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error saving name",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setSavingName(false);
     }
   };
 
@@ -193,6 +223,28 @@ const Settings = () => {
                         >
                           {uploading ? "Uploading..." : "Change Profile Picture"}
                         </Button>
+                      </div>
+                      <Separator />
+                      <div className="space-y-2">
+                        <Label htmlFor="fullName" className="text-sm text-muted-foreground">Full Name</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="fullName"
+                            placeholder="Enter your full name"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            maxLength={100}
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={handleSaveName}
+                            disabled={savingName}
+                            className="shrink-0"
+                          >
+                            {savingName ? "Saving..." : "Save"}
+                          </Button>
+                        </div>
                       </div>
                       <Separator />
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2">
