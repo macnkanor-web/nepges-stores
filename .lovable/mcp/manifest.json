@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "sdk_version": "0.25.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://wyyqojscsxrznsoncvcn.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "nepges-store-mcp",
+      "version": "0.1.0",
+      "title": "Nepges Store"
+    },
+    "tools": [
+      {
+        "name": "list_orders",
+        "title": "List my orders",
+        "description": "List the signed-in user's orders in the Nepges Store, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Max number of orders to return (default 20).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_wishlist",
+        "title": "List my wishlist",
+        "description": "List all products the signed-in user has saved to their wishlist.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "add_to_wishlist",
+        "title": "Add to wishlist",
+        "description": "Save a product (by its store handle) to the signed-in user's wishlist.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "product_handle": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The product handle from the Nepges Store."
+            }
+          },
+          "required": [
+            "product_handle"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_wallet_balance",
+        "title": "Get wallet balance",
+        "description": "Return the signed-in user's virtual wallet balance.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_wallet_transactions",
+        "title": "List wallet transactions",
+        "description": "List the signed-in user's virtual wallet transactions, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Max transactions to return (default 25).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

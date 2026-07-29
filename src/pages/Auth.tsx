@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,17 @@ import { Separator } from "@/components/ui/separator";
 
 const emailSchema = z.string().trim().email("Please enter a valid email address");
 
+// Accept only same-origin relative paths so callers can't redirect off-site.
+const safeNext = (raw: string | null): string => {
+  if (!raw) return "/store";
+  if (!raw.startsWith("/") || raw.startsWith("//")) return "/store";
+  return raw;
+};
+
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const nextPath = safeNext(searchParams.get("next"));
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -24,18 +33,18 @@ const Auth = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate("/store");
+        navigate(nextPath);
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/store");
+        navigate(nextPath);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, nextPath]);
 
   const handleGoogleLogin = async () => {
     setSocialLoading(true);
@@ -43,7 +52,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/store`,
+          redirectTo: `${window.location.origin}${nextPath}`,
         },
       });
       if (error) throw error;
@@ -65,18 +74,18 @@ const Auth = () => {
         });
         if (error) throw error;
         toast.success("Welcome back!");
-        navigate("/store");
+        navigate(nextPath);
       } else {
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/store`,
+            emailRedirectTo: `${window.location.origin}${nextPath}`,
           },
         });
         if (error) throw error;
         toast.success("Account created! Welcome!");
-        navigate("/store");
+        navigate(nextPath);
       }
     } catch (error: any) {
       toast.error(error.message || "Authentication failed");
@@ -84,6 +93,7 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();

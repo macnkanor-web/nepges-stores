@@ -1,0 +1,25 @@
+import { supabaseForUser } from "../supabase-client";
+import { defineTool } from "@lovable.dev/mcp-js";
+
+export default defineTool({
+  name: "get_wallet_balance",
+  title: "Get wallet balance",
+  description: "Return the signed-in user's virtual wallet balance.",
+  inputSchema: {},
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (_input, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const { data, error } = await supabaseForUser(ctx)
+      .from("wallets")
+      .select("balance, updated_at")
+      .maybeSingle();
+    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    const balance = data?.balance ?? 0;
+    return {
+      content: [{ type: "text", text: `Wallet balance: ${balance}` }],
+      structuredContent: { balance, updated_at: data?.updated_at ?? null },
+    };
+  },
+});
