@@ -17,7 +17,7 @@ export const AnimatedProductCard = ({ product, index }: AnimatedProductCardProps
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
-  const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
+  const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const addItem = useCartStore((state) => state.addItem);
 
   // Get all images from the images array
