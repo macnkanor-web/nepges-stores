@@ -71,6 +71,22 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
       return;
     }
 
+    const trimmedTitle = title.trim();
+    const trimmedContent = content.trim();
+
+    if (rating < 1 || rating > 5) {
+      toast.error('Please choose a rating between 1 and 5.');
+      return;
+    }
+    if (trimmedTitle.length > 200) {
+      toast.error('Title must be under 200 characters.');
+      return;
+    }
+    if (trimmedContent.length > 2000) {
+      toast.error('Review must be under 2000 characters.');
+      return;
+    }
+
     setIsSubmitting(true);
     const { error } = await supabase
       .from('product_reviews')
@@ -78,8 +94,8 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
         user_id: user.id,
         product_handle: productHandle,
         rating,
-        title,
-        content
+        title: trimmedTitle || null,
+        content: trimmedContent || null,
       }, { onConflict: 'user_id,product_handle' });
 
     if (error) {
@@ -95,6 +111,7 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
     }
     setIsSubmitting(false);
   };
+
 
   const averageRating = reviews.length > 0
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
@@ -160,6 +177,7 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Sum up your experience..."
                 className="bg-background"
+                maxLength={200}
               />
             </div>
             <div>
@@ -170,7 +188,9 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
                 placeholder="Share your thoughts about this product..."
                 rows={4}
                 className="bg-background"
+                maxLength={2000}
               />
+
             </div>
             <div className="flex gap-3">
               <Button type="submit" disabled={isSubmitting} className="bg-primary">

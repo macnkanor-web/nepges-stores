@@ -6,6 +6,7 @@ import { Wallet, Plus, History, CreditCard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { handleDatabaseError } from "@/lib/errorHandler";
 import {
   Dialog,
   DialogContent,
@@ -56,18 +57,17 @@ export const VirtualWallet = () => {
         .insert({ user_id: uid, balance: 0 });
 
       if (insertError) {
-        toast.error("Failed to create wallet");
-        console.error(insertError);
+        toast.error(handleDatabaseError(insertError, "wallet setup"));
       } else {
         setBalance(0);
       }
     } else if (error) {
-      toast.error("Failed to fetch wallet balance");
-      console.error(error);
+      toast.error(handleDatabaseError(error, "wallet lookup"));
     } else {
       setBalance(data?.balance || 0);
     }
   };
+
 
   const fetchTransactions = async (uid: string) => {
     const { data, error } = await supabase
@@ -112,10 +112,10 @@ export const VirtualWallet = () => {
       setAmount("");
       toast.success(`Successfully added $${depositAmount.toFixed(2)} to your wallet!`);
       await fetchTransactions(userId);
-    } catch (error: any) {
-      toast.error("Failed to add money: " + error.message);
-      console.error(error);
+    } catch (error: unknown) {
+      toast.error(handleDatabaseError(error, "wallet deposit"));
     } finally {
+
       setLoading(false);
     }
   };

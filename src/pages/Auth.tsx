@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { z } from "zod";
 import { Separator } from "@/components/ui/separator";
+import { handleAuthError } from "@/lib/errorHandler";
 
 const emailSchema = z.string().trim().email("Please enter a valid email address");
 
@@ -56,11 +57,12 @@ const Auth = () => {
         },
       });
       if (error) throw error;
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign in with Google");
+    } catch (error: unknown) {
+      toast.error(handleAuthError(error));
       setSocialLoading(false);
     }
   };
+
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,12 +89,13 @@ const Auth = () => {
         toast.success("Account created! Welcome!");
         navigate(nextPath);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Authentication failed");
+    } catch (error: unknown) {
+      toast.error(handleAuthError(error));
     } finally {
       setLoading(false);
     }
   };
+
 
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -115,12 +118,13 @@ const Auth = () => {
 
       toast.success("Password reset email sent! Check your inbox.");
       setIsForgotPassword(false);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to send reset email");
+    } catch (error: unknown) {
+      toast.error(handleAuthError(error));
     } finally {
       setLoading(false);
     }
   };
+
 
   if (isForgotPassword) {
     return (
