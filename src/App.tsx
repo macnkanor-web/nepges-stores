@@ -16,6 +16,8 @@ import Wishlist from "./pages/Wishlist";
 import OrderHistory from "./pages/OrderHistory";
 import NotFound from "./pages/NotFound";
 import OAuthConsent from "./pages/OAuthConsent";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
 
 const queryClient = new QueryClient();
 
@@ -30,7 +32,7 @@ const App = () => (
           <Route path="/store" element={<Store />} />
           <Route path="/store/product/:handle" element={<ProductDetail />} />
           <Route path="/customer-care" element={<CustomerCarePage />} />
-          <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/wishlist" element={<Wishlist />} />

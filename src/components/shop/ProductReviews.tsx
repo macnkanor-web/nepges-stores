@@ -177,6 +177,7 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Sum up your experience..."
                 className="bg-background"
+                maxLength={200}
               />
             </div>
             <div>
@@ -187,7 +188,9 @@ export const ProductReviews = ({ productHandle }: ProductReviewsProps) => {
                 placeholder="Share your thoughts about this product..."
                 rows={4}
                 className="bg-background"
+                maxLength={2000}
               />
+
             </div>
             <div className="flex gap-3">
               <Button type="submit" disabled={isSubmitting} className="bg-primary">
