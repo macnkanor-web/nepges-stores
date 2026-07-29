@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { z } from "zod";
+import { handleAuthError } from "@/lib/errorHandler";
+
 
 const passwordSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -27,16 +29,20 @@ const ResetPassword = () => {
     // Check if user came from a valid reset link
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const accessToken = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
     const type = hashParams.get('type');
-    
-    if (type === 'recovery' && accessToken) {
-      // User has a valid recovery token
+
+    if (type === 'recovery' && accessToken && refreshToken) {
       supabase.auth.setSession({
         access_token: accessToken,
-        refresh_token: hashParams.get('refresh_token') || '',
+        refresh_token: refreshToken,
       });
+      // Strip tokens from the URL so they don't linger in browser history,
+      // DevTools, or screenshots after the recovery session is established.
+      window.history.replaceState(null, '', window.location.pathname);
     }
   }, []);
+
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,13 +66,15 @@ const ResetPassword = () => {
 
       toast.success("Password updated successfully!");
       navigate("/auth");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to reset password");
-      setError(error.message);
+    } catch (error: unknown) {
+      const message = handleAuthError(error);
+      toast.error(message);
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4 sm:p-6">

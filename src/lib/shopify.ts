@@ -1,9 +1,9 @@
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const SHOPIFY_API_VERSION = '2025-07';
 export const SHOPIFY_STORE_PERMANENT_DOMAIN = 'dream-web-me-p2viv.myshopify.com';
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-export const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || '';
 
 export interface ShopifyProduct {
   node: {
@@ -50,38 +50,31 @@ export interface ShopifyProduct {
   };
 }
 
+// All Shopify Storefront calls are proxied through the `shopify-proxy` edge
+// function so the storefront access token stays server-side.
 export async function storefrontApiRequest(query: string, variables: any = {}) {
-  const response = await fetch(SHOPIFY_STOREFRONT_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
+  const { data, error } = await supabase.functions.invoke('shopify-proxy', {
+    body: { query, variables },
   });
 
-  if (response.status === 402) {
-    toast.error("Shopify: Payment required", {
-      description: "Shopify API access requires an active Shopify billing plan. Visit https://admin.shopify.com to upgrade your store.",
-    });
-    throw new Error("Payment required");
+  if (error) {
+    if ((error as any)?.context?.status === 402) {
+      toast.error("Shopify: Payment required", {
+        description: "Shopify API access requires an active Shopify billing plan.",
+      });
+    }
+    console.error('shopify-proxy failed:', error);
+    throw new Error('Shopify request failed');
   }
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-  
-  if (data.errors) {
-    throw new Error(`Error calling Shopify: ${data.errors.map((e: any) => e.message).join(', ')}`);
+  if (data?.errors) {
+    console.error('Shopify GraphQL errors:', data.errors);
+    throw new Error('Shopify request failed');
   }
 
   return data;
 }
+
 
 export const STOREFRONT_QUERY = `
   query GetProducts($first: Int!) {
